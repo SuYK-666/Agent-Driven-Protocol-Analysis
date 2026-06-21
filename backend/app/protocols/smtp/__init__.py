@@ -232,7 +232,7 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
     def probe_system_prompt(self) -> str:
         return (
             "You are a conservative SMTP probe planner (RFC 5321). "
-            "Choose up to three probes that test state transitions, "
+            "Choose up to twelve probes that test state transitions, "
             "such as sending RCPT before MAIL, or DATA before RCPT. "
             "Call the tool exactly once."
         )
@@ -242,7 +242,7 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
     # ------------------------------------------------------------------
 
     def select_probe_targets(self, transitions: list, invariants: list) -> list[dict]:
-        """Select up to 3 SMTP probe targets with preference for verifiable sequencing rules."""
+        """Select up to 12 SMTP probe targets with preference for verifiable sequencing rules."""
         fixed_targets: list[dict] = []
 
         # 1. DATA requires prior MAIL + RCPT — probe by sending DATA immediately after EHLO
@@ -250,7 +250,7 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
             (t for t in transitions if t.message_type == "DATA"),
             None
         )
-        if data_trans and len(fixed_targets) < 3:
+        if data_trans and len(fixed_targets) < 12:
             fixed_targets.append({
                 "type": "transition",
                 "claim": data_trans,
@@ -262,7 +262,7 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
             (t for t in transitions if t.message_type == "QUIT" and t.from_state == "GREETED"),
             None
         )
-        if quit_trans and len(fixed_targets) < 3:
+        if quit_trans and len(fixed_targets) < 12:
             fixed_targets.append({
                 "type": "transition",
                 "claim": quit_trans,
@@ -274,7 +274,7 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
             (t for t in transitions if t.message_type == "RCPT"),
             None
         )
-        if rcpt_trans and len(fixed_targets) < 3:
+        if rcpt_trans and len(fixed_targets) < 12:
             fixed_targets.append({
                 "type": "transition",
                 "claim": rcpt_trans,
@@ -282,10 +282,11 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
             })
 
         if fixed_targets:
-            return fixed_targets[:3]
+            probe_targets = list(fixed_targets)
+        else:
+            probe_targets = []
 
         # Fallback: hypothesis transitions
-        probe_targets: list[dict] = []
         for t in transitions:
             if t.status == "hypothesis":
                 probe_targets.append({
@@ -293,9 +294,9 @@ class SMTPProtocolAdapter(GenericTextProtocolAdapter):
                     "claim": t,
                     "description": f"{t.from_state} -> {t.to_state} via {t.message_type}",
                 })
-                if len(probe_targets) >= 3:
+                if len(probe_targets) >= 12:
                     break
-        return probe_targets[:3]
+        return probe_targets[:12]
 
     def generate_probe_commands(self, target: dict) -> list[str]:
         """Generate SMTP command sequences for a given probe target."""

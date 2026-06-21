@@ -1,0 +1,1177 @@
+{
+  "project_id": 3,
+  "label": "e1_r3",
+  "protocol": "SMTP",
+  "provider": "Qwen",
+  "model": "qwen3.7-plus",
+  "created_at": "2026-06-06T10:15:04.229445",
+  "counts": {
+    "messages": 12,
+    "states": 8,
+    "transitions": 15,
+    "invariants": 14,
+    "evidence": 100,
+    "probes": 0,
+    "traces": 11
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "observed_message_coverage": 1.0,
+    "message_only_replay": 1.0,
+    "msg_resp_replay": 1.0,
+    "full_state_replay": 0.875,
+    "strict_replay": 0.875,
+    "relaxed_replay": 1.0,
+    "session_replay": 0.875,
+    "evidence_locatability": 0.92,
+    "contradiction_rate": 0.0,
+    "probe_expected_pass": 0.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 122.399
+  },
+  "message_types": [
+    "AUTH",
+    "DATA",
+    "EHLO",
+    "EXPN",
+    "HELO",
+    "MAIL",
+    "NOOP",
+    "QUIT",
+    "RCPT",
+    "RSET",
+    "STARTTLS",
+    "VRFY"
+  ],
+  "states": [
+    "CONNECTED",
+    "GREETED",
+    "MAIL_PENDING",
+    "RCPT_PENDING",
+    "DATA_PENDING",
+    "MESSAGE_SENT",
+    "AUTHENTICATED",
+    "CLOSED"
+  ],
+  "transitions": [
+    {
+      "from": "CONNECTED",
+      "to": "GREETED",
+      "via": "EHLO",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "GREETED",
+      "via": "HELO",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "GREETED",
+      "to": "AUTHENTICATED",
+      "via": "AUTH",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "GREETED",
+      "to": "MAIL_PENDING",
+      "via": "MAIL",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "AUTHENTICATED",
+      "to": "MAIL_PENDING",
+      "via": "MAIL",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "GREETED",
+      "to": "GREETED",
+      "via": "NOOP",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "GREETED",
+      "to": "GREETED",
+      "via": "VRFY",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "MAIL_PENDING",
+      "to": "RCPT_PENDING",
+      "via": "RCPT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RCPT_PENDING",
+      "to": "RCPT_PENDING",
+      "via": "RCPT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RCPT_PENDING",
+      "to": "DATA_PENDING",
+      "via": "DATA",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "DATA_PENDING",
+      "to": "MESSAGE_SENT",
+      "via": "DATA",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RCPT_PENDING",
+      "to": "MAIL_PENDING",
+      "via": "RSET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "MESSAGE_SENT",
+      "to": "MAIL_PENDING",
+      "via": "RSET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "MESSAGE_SENT",
+      "to": "CLOSED",
+      "via": "QUIT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "GREETED",
+      "to": "CLOSED",
+      "via": "QUIT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    }
+  ],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "EHLO",
+        "HELO",
+        "MAIL",
+        "RCPT",
+        "DATA",
+        "AUTH",
+        "STARTTLS",
+        "RSET",
+        "QUIT",
+        "NOOP",
+        "VRFY",
+        "EXPN"
+      ],
+      "invariants_created": [
+        "EHLO or HELO MUST precede MAIL FROM",
+        "MAIL FROM MUST precede RCPT TO",
+        "RCPT TO MUST precede DATA",
+        "At least one RCPT TO required before DATA",
+        "AUTH must follow EHLO (not HELO)",
+        "STARTTLS must follow EHLO and precede AUTH or MAIL",
+        "RSET returns to post-greeting state without closing connection",
+        "Multiple RCPT TO commands allowed before DATA",
+        "MAIL.sender: Must be valid email address format enclosed in angle brackets",
+        "RCPT.recipient: Must be valid email address format enclosed in angle brackets",
+        "EHLO.domain: Must be a valid hostname or domain identifier",
+        "HELO.domain: Must be a valid hostname",
+        "AUTH.mechanism: Must be one of: PLAIN, LOGIN, CRAM-MD5",
+        "DATA.content: Message body must end with a line containing only a period character"
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 10
+    },
+    "trace": {
+      "agent": "trace",
+      "events_parsed": 67,
+      "sessions_processed": 10,
+      "llm_tool_calls": 1,
+      "observation_tool_used": true,
+      "observation_summary": {
+        "message_types": 10,
+        "states": 7,
+        "sequence_patterns": 5
+      },
+      "fallback_used": false,
+      "message_types_updated": [],
+      "states_created": [
+        "CONNECTED",
+        "GREETED",
+        "MAIL_PENDING",
+        "RCPT_PENDING",
+        "DATA_PENDING",
+        "MESSAGE_SENT",
+        "AUTHENTICATED",
+        "CLOSED"
+      ],
+      "transitions_created": [
+        "CONNECTED → GREETED via EHLO",
+        "CONNECTED → GREETED via HELO",
+        "GREETED → AUTHENTICATED via AUTH",
+        "GREETED → MAIL_PENDING via MAIL",
+        "AUTHENTICATED → MAIL_PENDING via MAIL",
+        "GREETED → GREETED via NOOP",
+        "GREETED → GREETED via VRFY",
+        "MAIL_PENDING → RCPT_PENDING via RCPT",
+        "RCPT_PENDING → RCPT_PENDING via RCPT",
+        "RCPT_PENDING → DATA_PENDING via DATA",
+        "DATA_PENDING → MESSAGE_SENT via DATA",
+        "RCPT_PENDING → MAIL_PENDING via RSET",
+        "MESSAGE_SENT → MAIL_PENDING via RSET",
+        "MESSAGE_SENT → CLOSED via QUIT",
+        "GREETED → CLOSED via QUIT"
+      ]
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 15,
+      "invariants_verified": 14,
+      "status_changes": [
+        {
+          "type": "transition",
+          "description": "CONNECTED -> GREETED via EHLO",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence directly shows 8/10 sessions using EHLO as first command with 250 response, confirming the transition behavior."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> GREETED via HELO",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence shows 2/10 sessions using HELO as first command with 250 response, confirming this legacy transition path."
+        },
+        {
+          "type": "transition",
+          "description": "GREETED -> AUTHENTICATED via AUTH",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence from Sessions 3 and 7 explicitly shows AUTH after EHLO with 235 success response, validating the transition."
+        },
+        {
+          "type": "transition",
+          "description": "GREETED -> MAIL_PENDING via MAIL",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence confirms sessions can proceed directly from GREETED to MAIL without AUTH, with 250 response codes."
+        },
+        {
+          "type": "transition",
+          "description": "AUTHENTICATED -> MAIL_PENDING via MAIL",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence shows MAIL FROM issued after successful AUTH with 250 response, confirming the transition."
+        },
+        {
+          "type": "transition",
+          "description": "GREETED -> GREETED via NOOP",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence indicates NOOP keeps connection alive and stays in current state with 250 response, consistent with self-loop."
+        },
+        {
+          "type": "transition",
+          "description": "GREETED -> GREETED via VRFY",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence shows VRFY is auxiliary and does not change transaction state with 252 response, supporting the self-loop claim."
+        },
+        {
+          "type": "transition",
+          "description": "MAIL_PENDING -> RCPT_PENDING via RCPT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence confirms RCPT TO follows MAIL FROM with 250/550 responses, validating the transition."
+        },
+        {
+          "type": "transition",
+          "description": "RCPT_PENDING -> RCPT_PENDING via RCPT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence explicitly states multiple RCPT TO commands allowed in sequence with 250/550 responses."
+        },
+        {
+          "type": "transition",
+          "description": "RCPT_PENDING -> DATA_PENDING via DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence shows DATA command initiates message body transfer after recipients specified with 250 response."
+        },
+        {
+          "type": "transition",
+          "description": "DATA_PENDING -> MESSAGE_SENT via DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence confirms completion of DATA body results in 250 queued response, marking message sent."
+        },
+        {
+          "type": "transition",
+          "description": "RCPT_PENDING -> MAIL_PENDING via RSET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence states RSET resets mail transaction, clearing MAIL and RCPT state with 250 response."
+        },
+        {
+          "type": "transition",
+          "description": "MESSAGE_SENT -> MAIL_PENDING via RSET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence from Session 7 shows RSET after message sent resets for new transaction with 250 response."
+        },
+        {
+          "type": "transition",
+          "description": "MESSAGE_SENT -> CLOSED via QUIT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence confirms QUIT terminates session after successful message delivery with 221 response."
+        },
+        {
+          "type": "transition",
+          "description": "GREETED -> CLOSED via QUIT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Trace evidence states QUIT can be sent at any time after greeting with 221 response, supporting early termination."
+        },
+        {
+          "type": "invariant",
+          "description": "EHLO or HELO MUST precede MAIL FROM",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation rather than direct trace validation. While consistent with trace data showing EHLO/HELO first, no negative test cases (MAIL before EHLO) are shown in traces."
+        },
+        {
+          "type": "invariant",
+          "description": "MAIL FROM MUST precede RCPT TO",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation. Traces show correct ordering but do not explicitly test violation scenarios."
+        },
+        {
+          "type": "invariant",
+          "description": "RCPT TO MUST precede DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation. Traces follow this order but lack explicit constraint validation evidence."
+        },
+        {
+          "type": "invariant",
+          "description": "At least one RCPT TO required before DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation. No trace evidence shows what happens when DATA is sent without RCPT TO."
+        },
+        {
+          "type": "invariant",
+          "description": "AUTH must follow EHLO (not HELO)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation. Trace shows AUTH after EHLO in sessions 3 and 7, but no evidence explicitly tests AUTH after HELO failure."
+        },
+        {
+          "type": "invariant",
+          "description": "STARTTLS must follow EHLO and precede AUTH or MAIL",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. No trace evidence mentions STARTTLS usage at all, making this purely speculative based on docs."
+        },
+        {
+          "type": "invariant",
+          "description": "RSET returns to post-greeting state without closing connection",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation. Trace shows RSET resets transaction but does not explicitly verify connection remains open in all cases."
+        },
+        {
+          "type": "invariant",
+          "description": "Multiple RCPT TO commands allowed before DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Trace evidence explicitly confirms multiple RCPT TO commands allowed in sequence, directly supporting this invariant."
+        },
+        {
+          "type": "invariant",
+          "description": "MAIL.sender: Must be valid email address format enclosed in angle brackets",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence validates format enforcement or rejection of invalid formats."
+        },
+        {
+          "type": "invariant",
+          "description": "RCPT.recipient: Must be valid email address format enclosed in angle brackets",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence validates format enforcement or rejection of invalid formats."
+        },
+        {
+          "type": "invariant",
+          "description": "EHLO.domain: Must be a valid hostname or domain identifier",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence shows validation of domain format or rejection of invalid domains."
+        },
+        {
+          "type": "invariant",
+          "description": "HELO.domain: Must be a valid hostname",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence shows validation of hostname format or rejection of invalid hostnames."
+        },
+        {
+          "type": "invariant",
+          "description": "AUTH.mechanism: Must be one of: PLAIN, LOGIN, CRAM-MD5",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence shows which mechanisms were used or if others were rejected."
+        },
+        {
+          "type": "invariant",
+          "description": "DATA.content: Message body must end with a line containing only a period character",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis documentation. No trace evidence explicitly validates the terminating period requirement."
+        }
+      ]
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 3,
+        "protocol": "SMTP",
+        "messages": {
+          "AUTH": {
+            "template": "AUTH <mechanism> [credentials]",
+            "fields": {
+              "credentials": {
+                "type": "string",
+                "examples": [
+                  "Optional authentication credentials depending on mechanism"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "mechanism": {
+                "type": "string",
+                "examples": [
+                  "LOGIN"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "GREETED"
+            ],
+            "postconditions": [
+              "AUTHENTICATED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "DATA": {
+            "template": "DATA",
+            "fields": {},
+            "preconditions": [
+              "DATA_PENDING",
+              "RCPT_PENDING"
+            ],
+            "postconditions": [
+              "DATA_PENDING",
+              "MESSAGE_SENT"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 10,
+            "confidence": 0.95
+          },
+          "EHLO": {
+            "template": "EHLO <domain>",
+            "fields": {
+              "domain": {
+                "type": "string",
+                "examples": [
+                  "CLIENT.EXAMPLE.COM",
+                  "RELAY.NET",
+                  "FUZZER.LOCAL",
+                  "PROBE.TEST",
+                  "MAIL.EXAMPLE.COM"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "GREETED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 8,
+            "confidence": 0.95
+          },
+          "EXPN": {
+            "template": "EXPN <list>",
+            "fields": {
+              "list": {
+                "type": "string",
+                "examples": [
+                  "Mailing list to expand"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.9
+          },
+          "HELO": {
+            "template": "HELO <domain>",
+            "fields": {
+              "domain": {
+                "type": "string",
+                "examples": [
+                  "OLD.CLIENT",
+                  "LEGACY.CLIENT"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "GREETED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "MAIL": {
+            "template": "MAIL FROM:<sender@domain>",
+            "fields": {
+              "from": {
+                "type": "string",
+                "examples": [
+                  "alice@example.com",
+                  "sender@relay.net",
+                  "fuzzer@local",
+                  "retry@local",
+                  "postmaster@old.client"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "sender": {
+                "type": "string",
+                "examples": [
+                  "Envelope sender address in angle brackets"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "size": {
+                "type": "integer",
+                "examples": [
+                  "1024"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              }
+            },
+            "preconditions": [
+              "AUTHENTICATED",
+              "GREETED"
+            ],
+            "postconditions": [
+              "MAIL_PENDING"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 12,
+            "confidence": 0.95
+          },
+          "NOOP": {
+            "template": "NOOP",
+            "fields": {},
+            "preconditions": [
+              "GREETED"
+            ],
+            "postconditions": [
+              "GREETED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "QUIT": {
+            "template": "QUIT",
+            "fields": {},
+            "preconditions": [
+              "GREETED",
+              "MESSAGE_SENT"
+            ],
+            "postconditions": [
+              "CLOSED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 10,
+            "confidence": 0.95
+          },
+          "RCPT": {
+            "template": "RCPT TO:<recipient@domain>",
+            "fields": {
+              "recipient": {
+                "type": "string",
+                "examples": [
+                  "Envelope recipient address in angle brackets"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "to": {
+                "type": "string",
+                "examples": [
+                  "bob@example.com",
+                  "user1@dest.com",
+                  "user2@dest.com",
+                  "unknown@dest.com",
+                  "target@local"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "MAIL_PENDING",
+              "RCPT_PENDING"
+            ],
+            "postconditions": [
+              "RCPT_PENDING"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 16,
+            "confidence": 0.95
+          },
+          "RSET": {
+            "template": "RSET",
+            "fields": {},
+            "preconditions": [
+              "MESSAGE_SENT",
+              "RCPT_PENDING"
+            ],
+            "postconditions": [
+              "MAIL_PENDING"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 3,
+            "confidence": 0.95
+          },
+          "STARTTLS": {
+            "template": "STARTTLS",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          },
+          "VRFY": {
+            "template": "VRFY <address>",
+            "fields": {
+              "address": {
+                "type": "string",
+                "examples": [
+                  "Address to verify"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "args": {
+                "type": "string",
+                "examples": [
+                  "ADMIN@SERVER",
+                  "USER@EXAMPLE.COM"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "GREETED"
+            ],
+            "postconditions": [
+              "GREETED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          }
+        },
+        "states": [
+          {
+            "name": "AUTHENTICATED",
+            "description": "",
+            "confidence": 0.98
+          },
+          {
+            "name": "CLOSED",
+            "description": "QUIT command sent, connection terminated with 221 response",
+            "confidence": 0.98
+          },
+          {
+            "name": "CONNECTED",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "DATA_PENDING",
+            "description": "",
+            "confidence": 0.85
+          },
+          {
+            "name": "GREETED",
+            "description": "",
+            "confidence": 0.98
+          },
+          {
+            "name": "MAIL_PENDING",
+            "description": "",
+            "confidence": 0.98
+          },
+          {
+            "name": "MESSAGE_SENT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "RCPT_PENDING",
+            "description": "",
+            "confidence": 0.95
+          }
+        ],
+        "transitions": [
+          {
+            "from_state": "CONNECTED",
+            "to_state": "GREETED",
+            "message_type": "EHLO",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "GREETED",
+            "message_type": "HELO",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "GREETED",
+            "to_state": "AUTHENTICATED",
+            "message_type": "AUTH",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "GREETED",
+            "to_state": "MAIL_PENDING",
+            "message_type": "MAIL",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "AUTHENTICATED",
+            "to_state": "MAIL_PENDING",
+            "message_type": "MAIL",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "GREETED",
+            "to_state": "GREETED",
+            "message_type": "NOOP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "GREETED",
+            "to_state": "GREETED",
+            "message_type": "VRFY",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "MAIL_PENDING",
+            "to_state": "RCPT_PENDING",
+            "message_type": "RCPT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RCPT_PENDING",
+            "to_state": "RCPT_PENDING",
+            "message_type": "RCPT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RCPT_PENDING",
+            "to_state": "DATA_PENDING",
+            "message_type": "DATA",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "DATA_PENDING",
+            "to_state": "MESSAGE_SENT",
+            "message_type": "DATA",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RCPT_PENDING",
+            "to_state": "MAIL_PENDING",
+            "message_type": "RSET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "MESSAGE_SENT",
+            "to_state": "MAIL_PENDING",
+            "message_type": "RSET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "MESSAGE_SENT",
+            "to_state": "CLOSED",
+            "message_type": "QUIT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "GREETED",
+            "to_state": "CLOSED",
+            "message_type": "QUIT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          }
+        ],
+        "ordering_rules": [
+          "EHLO or HELO MUST precede MAIL FROM",
+          "MAIL FROM MUST precede RCPT TO",
+          "RCPT TO MUST precede DATA",
+          "AUTH must follow EHLO (not HELO)",
+          "STARTTLS must follow EHLO and precede AUTH or MAIL",
+          "RSET returns to post-greeting state without closing connection",
+          "Multiple RCPT TO commands allowed before DATA"
+        ],
+        "field_constraints": [
+          "At least one RCPT TO required before DATA",
+          "MAIL.sender: Must be valid email address format enclosed in angle brackets",
+          "RCPT.recipient: Must be valid email address format enclosed in angle brackets",
+          "EHLO.domain: Must be a valid hostname or domain identifier",
+          "HELO.domain: Must be a valid hostname",
+          "AUTH.mechanism: Must be one of: PLAIN, LOGIN, CRAM-MD5",
+          "DATA.content: Message body must end with a line containing only a period character"
+        ],
+        "dangerous_input_families": [
+          "oversized token",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 3,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 3,
+        "unused_message_types": [
+          "EXPN",
+          "STARTTLS"
+        ],
+        "isolated_states": [
+          {
+            "state": "CONNECTED",
+            "incoming": 0,
+            "outgoing": 2
+          }
+        ],
+        "weak_transitions": [
+          {
+            "description": "CONNECTED -> GREETED via EHLO",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> GREETED via HELO",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "GREETED -> AUTHENTICATED via AUTH",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "GREETED -> MAIL_PENDING via MAIL",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "AUTHENTICATED -> MAIL_PENDING via MAIL",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "GREETED -> GREETED via NOOP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "GREETED -> GREETED via VRFY",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "MAIL_PENDING -> RCPT_PENDING via RCPT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "RCPT_PENDING -> RCPT_PENDING via RCPT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "RCPT_PENDING -> DATA_PENDING via DATA",
+            "status": "hypothesis",
+            "confidence": 0.8
+          }
+        ],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 0.0,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: EXPN, STARTTLS",
+          "Some inferred states are weakly connected in the current model; add directed seeds for: CONNECTED",
+          "No probes were executed; schedule online validation for authentication, directory traversal, and rename flows."
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [
+            "EHLO",
+            "HELO",
+            "AUTH",
+            "MAIL",
+            "NOOP",
+            "VRFY"
+          ],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: EXPN, STARTTLS"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 41,
+      "repaired": 51
+    },
+    "llm_usage": {
+      "calls": 3,
+      "prompt_tokens": 7369,
+      "completion_tokens": 6241,
+      "total_tokens": 13610,
+      "reasoning_tokens": 0
+    }
+  },
+  "llm_usage": {
+    "calls": 3,
+    "prompt_tokens": 7369,
+    "completion_tokens": 6241,
+    "total_tokens": 13610,
+    "reasoning_tokens": 0
+  }
+}

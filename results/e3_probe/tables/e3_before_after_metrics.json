@@ -1,0 +1,58 @@
+[
+  {
+    "protocol": "FTP",
+    "msg_resp_replay_before": 0.4176,
+    "msg_resp_replay_after": 0.4176,
+    "replay_gain": 0.0,
+    "full_state_before": 0.3654,
+    "full_state_after": 0.3654,
+    "full_state_gain": 0.0,
+    "contradiction_before": 0.0,
+    "contradiction_after": 0.05,
+    "evidence_loc_before": 0.9542,
+    "evidence_loc_after": 0.9568,
+    "evidence_gain": 0.0026
+  },
+  {
+    "protocol": "SMTP",
+    "msg_resp_replay_before": 1.0,
+    "msg_resp_replay_after": 0.9403,
+    "replay_gain": -0.0597,
+    "full_state_before": 0.8333,
+    "full_state_after": 0.6547,
+    "full_state_gain": -0.1786,
+    "contradiction_before": 0.0238,
+    "contradiction_after": 0.0,
+    "evidence_loc_before": 0.921,
+    "evidence_loc_after": 0.9143,
+    "evidence_gain": -0.0067
+  },
+  {
+    "protocol": "RTSP",
+    "msg_resp_replay_before": 0.9474,
+    "msg_resp_replay_after": 0.9474,
+    "replay_gain": 0.0,
+    "full_state_before": 0.812,
+    "full_state_after": 0.812,
+    "full_state_gain": 0.0,
+    "contradiction_before": 0.0333,
+    "contradiction_after": 0.0,
+    "evidence_loc_before": 0.8935,
+    "evidence_loc_after": 0.9126,
+    "evidence_gain": 0.0191
+  },
+  {
+    "protocol": "HTTP",
+    "msg_resp_replay_before": 1.0,
+    "msg_resp_replay_after": 1.0,
+    "replay_gain": 0.0,
+    "full_state_before": 0.5417,
+    "full_state_after": 0.5,
+    "full_state_gain": -0.0417,
+    "contradiction_before": 0.0,
+    "contradiction_after": 0.0,
+    "evidence_loc_before": 0.8928,
+    "evidence_loc_after": 0.9032,
+    "evidence_gain": 0.0104
+  }
+]

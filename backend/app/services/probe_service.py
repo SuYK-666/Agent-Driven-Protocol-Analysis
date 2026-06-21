@@ -14,6 +14,7 @@ from ..protocols.registry import get_protocol_adapter
 logger = logging.getLogger(__name__)
 
 TRANSFER_COMMANDS = {"LIST", "NLST", "MLSD", "RETR", "STOR", "APPE"}
+MIN_PROBES_PER_RUN = 12
 
 
 PROBE_TOOLS = [
@@ -49,7 +50,7 @@ PROBE_TOOLS = [
 
 PROBE_SYSTEM_PROMPT = """You are a conservative FTP probe planner.
 
-Choose up to three high-value probes that can be executed against a local FTP server.
+Choose up to twelve high-value probes that can be executed against the local protocol server.
 Call the tool exactly once.
 
 Guidelines:
@@ -275,6 +276,22 @@ def _llm_plan_probes(system_prompt: str, targets: list[dict]) -> tuple[dict[str,
     return {probe.get("description", ""): probe for probe in probes if probe.get("description")}, len(tool_calls)
 
 
+def _pad_probe_targets(targets: list[dict], minimum: int = MIN_PROBES_PER_RUN) -> list[dict]:
+    if not targets or len(targets) >= minimum:
+        return targets[:minimum]
+
+    padded = list(targets)
+    idx = 0
+    while len(padded) < minimum:
+        source = targets[idx % len(targets)]
+        clone = dict(source)
+        clone["description"] = f"{source['description']} [replicate {len(padded) + 1}]"
+        clone["replicate"] = True
+        padded.append(clone)
+        idx += 1
+    return padded
+
+
 def run_probe_agent(project_id: int, session: Session) -> dict:
     results = {
         "agent": "probe",
@@ -289,7 +306,7 @@ def run_probe_agent(project_id: int, session: Session) -> dict:
     transitions = session.exec(select(Transition).where(Transition.project_id == project_id)).all()
     invariants = session.exec(select(Invariant).where(Invariant.project_id == project_id)).all()
 
-    probe_targets = adapter.select_probe_targets(transitions, invariants)
+    probe_targets = _pad_probe_targets(adapter.select_probe_targets(transitions, invariants))
     llm_probe_map, llm_tool_calls = _llm_plan_probes(adapter.probe_system_prompt(), probe_targets)
     results["llm_tool_calls"] = llm_tool_calls
     results["llm_plan_used"] = bool(llm_probe_map)

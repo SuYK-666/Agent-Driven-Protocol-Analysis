@@ -1,0 +1,1784 @@
+{
+  "project_id": 142,
+  "label": "e4_GLM-51_r3",
+  "protocol": "HTTP",
+  "provider": "GLM",
+  "model": "glm-5.1",
+  "created_at": "2026-06-06T11:57:17.056608",
+  "counts": {
+    "messages": 9,
+    "states": 8,
+    "transitions": 12,
+    "invariants": 27,
+    "evidence": 120,
+    "probes": 12,
+    "traces": 7
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 0.9936,
+    "observed_message_coverage": 1.0,
+    "message_only_replay": 1.0,
+    "msg_resp_replay": 1.0,
+    "full_state_replay": 0.625,
+    "strict_replay": 0.625,
+    "relaxed_replay": 1.0,
+    "session_replay": 0.625,
+    "evidence_locatability": 0.9333,
+    "contradiction_rate": 0.0,
+    "probe_expected_pass": 1.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 212.271
+  },
+  "message_types": [
+    "DELETE",
+    "GET",
+    "HEAD",
+    "HTTP REQUEST",
+    "HTTP RESPONSE",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT"
+  ],
+  "states": [
+    "INIT",
+    "CONNECTED",
+    "REQUEST_SENT",
+    "RESPONSE_RECEIVED",
+    "AUTH_REQUIRED",
+    "REDIRECT",
+    "ERROR",
+    "CLOSED"
+  ],
+  "transitions": [
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RESPONSE_RECEIVED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "AUTH_REQUIRED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "REDIRECT",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "POST",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RESPONSE_RECEIVED",
+      "to": "REQUEST_SENT",
+      "via": "POST",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "PUT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "DELETE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "HEAD",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "OPTIONS",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "PATCH",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "INIT",
+      "to": "CONNECTED",
+      "via": "TCP_CONNECT",
+      "status": "hypothesis",
+      "confidence": 0.8
+    }
+  ],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "HTTP REQUEST",
+        "HTTP RESPONSE"
+      ],
+      "invariants_created": [
+        "Host header is mandatory in every HTTP/1.1 request",
+        "Content-Length or Transfer-Encoding is required when a request or response has a body",
+        "POST, PUT, and PATCH requests should include a body with a Content-Type header",
+        "HEAD response must not include a message body",
+        "After receiving 401 Unauthorized, client must retry the request with an Authorization header",
+        "After receiving a 3xx redirect response, client should follow the Location header to the new URI",
+        "Connection: close header signals the connection will be closed after the response is sent",
+        "Persistent connections (keep-alive) allow multiple request-response cycles on a single TCP connection",
+        "OPTIONS * targets the server as a whole rather than a specific resource path",
+        "Request line must come first, followed by headers, then an empty line (CRLF CRLF), then optional body",
+        "State transition: INIT → TCP connect → CONNECTED → send request → RESPONSE_PENDING → receive response → IDLE (or AUTH_REQUIRED on 401, or follow redirect on 3xx, or CLOSED on Connection: close)",
+        "After 301/302 redirect, the client issues a new GET request to the Location URI before proceeding with other operations",
+        "Safe methods (GET, HEAD, OPTIONS, TRACE) should not modify server state; idempotent methods (GET, HEAD, PUT, DELETE, OPTIONS, TRACE) produce same result on repeated calls",
+        "HTTP REQUEST.Host: Mandatory in every HTTP/1.1 request; identifies the target virtual host",
+        "HTTP REQUEST.Content-Length: Required when request body is present; must accurately reflect byte length of body",
+        "HTTP REQUEST.Transfer-Encoding: Alternative to Content-Length when body is present; 'chunked' allows streaming without known length",
+        "HTTP REQUEST.Content-Type: Should be included for POST, PUT, and PATCH requests that have a body (e.g., application/json)",
+        "HTTP REQUEST.Authorization: Must be included when retrying after a 401 Unauthorized response; carries credentials for protected resources",
+        "HTTP REQUEST.Method: Must be one of: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH, CONNECT, TRACE; determines semantics (safe, idempotent, body requirements)",
+        "HTTP REQUEST.Request-URI: Target resource path; '*' for server-level OPTIONS request",
+        "HTTP REQUEST.Connection: 'keep-alive' (default) for persistent connections; 'close' to terminate connection after response",
+        "HTTP RESPONSE.Status-Code: 3-digit code: 2xx=success, 3xx=redirection, 4xx=client error, 5xx=server error; determines client behavior (retry auth on 401, follow redirect on 3xx, etc.)",
+        "HTTP RESPONSE.Location: Must be present in 3xx redirect responses; provides the target URI for the client to follow",
+        "HTTP RESPONSE.Body: MUST NOT be present in HEAD responses; absent for 204 No Content and 304 Not Modified; present for most other success/error responses",
+        "HTTP RESPONSE.Set-Cookie: Server-side session management; client stores and re-sends as Cookie header in subsequent requests",
+        "HTTP RESPONSE.Content-Length: Required when response body is present; must match actual body byte length",
+        "HTTP RESPONSE.Connection: 'close' signals connection termination after response; 'keep-alive' (default) allows further requests on same connection"
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 6
+    },
+    "trace": {
+      "agent": "trace",
+      "events_parsed": 28,
+      "sessions_processed": 6,
+      "llm_tool_calls": 1,
+      "observation_tool_used": true,
+      "observation_summary": {
+        "message_types": 4,
+        "states": 8,
+        "sequence_patterns": 5
+      },
+      "fallback_used": false,
+      "message_types_updated": [
+        "DELETE",
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PATCH",
+        "POST",
+        "PUT"
+      ],
+      "states_created": [
+        "INIT",
+        "CONNECTED",
+        "REQUEST_SENT",
+        "RESPONSE_RECEIVED",
+        "AUTH_REQUIRED",
+        "REDIRECT",
+        "ERROR",
+        "CLOSED"
+      ],
+      "transitions_created": [
+        "CONNECTED → REQUEST_SENT via GET",
+        "RESPONSE_RECEIVED → REQUEST_SENT via GET",
+        "AUTH_REQUIRED → REQUEST_SENT via GET",
+        "REDIRECT → REQUEST_SENT via GET",
+        "CONNECTED → REQUEST_SENT via POST",
+        "RESPONSE_RECEIVED → REQUEST_SENT via POST",
+        "CONNECTED → REQUEST_SENT via PUT",
+        "CONNECTED → REQUEST_SENT via DELETE",
+        "CONNECTED → REQUEST_SENT via HEAD",
+        "CONNECTED → REQUEST_SENT via OPTIONS",
+        "CONNECTED → REQUEST_SENT via PATCH",
+        "INIT → CONNECTED via TCP_CONNECT"
+      ]
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 12,
+      "invariants_verified": 27,
+      "status_changes": [
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation, not from observed trace or probe behavior. No direct protocol execution evidence confirms this transition."
+        },
+        {
+          "type": "transition",
+          "description": "RESPONSE_RECEIVED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation. This represents a keep-alive reuse pattern but lacks direct trace or probe confirmation."
+        },
+        {
+          "type": "transition",
+          "description": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation. The 401 retry pattern is plausible but unconfirmed by direct observation."
+        },
+        {
+          "type": "transition",
+          "description": "REDIRECT -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation. The 3xx redirect follow pattern is plausible but unconfirmed by direct observation."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via POST",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation, not from observed trace or probe behavior."
+        },
+        {
+          "type": "transition",
+          "description": "RESPONSE_RECEIVED -> REQUEST_SENT via POST",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation. No direct trace or probe confirmation."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via PUT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation, not from observed trace or probe behavior."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via DELETE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation, not from observed trace or probe behavior."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via PATCH",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation, not from observed trace or probe behavior."
+        },
+        {
+          "type": "transition",
+          "description": "INIT -> CONNECTED via TCP_CONNECT",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from heuristic trace augmentation. The TCP connect step is structurally expected but lacks direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "Host header is mandatory in every HTTP/1.1 request",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only, not from direct trace or probe observation. The claim aligns with RFC 2616/7230 but lacks empirical protocol evidence."
+        },
+        {
+          "type": "invariant",
+          "description": "Content-Length or Transfer-Encoding is required when a request or response has a body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. Consistent with HTTP/1.1 spec but no trace or probe data confirms this in practice."
+        },
+        {
+          "type": "invariant",
+          "description": "POST, PUT, and PATCH requests should include a body with a Content-Type header",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. The 'should' qualifier is appropriate but no trace or probe data confirms this behaviorally. Some edge cases (e.g., empty POST bodies) may not require Content-Type."
+        },
+        {
+          "type": "invariant",
+          "description": "HEAD response must not include a message body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. This is a well-known HTTP/1.1 rule but lacks direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "After receiving 401 Unauthorized, client must retry the request with an Authorization header",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. The 'must' is strong; RFC 7235 uses 'SHOULD' not 'MUST' for retrying with credentials. No trace or probe evidence confirms this behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "After receiving a 3xx redirect response, client should follow the Location header to the new URI",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only, with a reference to a session trace (Session 3). The session trace is indirect evidence but not a direct probe confirming the invariant."
+        },
+        {
+          "type": "invariant",
+          "description": "Connection: close header signals the connection will be closed after the response is sent",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "Persistent connections (keep-alive) allow multiple request-response cycles on a single TCP connection",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. Well-established HTTP/1.1 behavior but lacks direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "OPTIONS * targets the server as a whole rather than a specific resource path",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. This is a standard HTTP convention but no trace or probe data confirms it."
+        },
+        {
+          "type": "invariant",
+          "description": "Request line must come first, followed by headers, then an empty line (CRLF CRLF), then optional body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. This is the fundamental HTTP/1.1 message format but lacks direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "State transition: INIT → TCP connect → CONNECTED → send request → RESPONSE_PENDING → receive response → IDLE (or AUTH_REQUIRED on 401, or follow redirect on 3xx, or CLOSED on Connection: close)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. This is a composite state machine description that aggregates multiple claims; no single trace or probe confirms the full sequence."
+        },
+        {
+          "type": "invariant",
+          "description": "After 301/302 redirect, the client issues a new GET request to the Location URI before proceeding with other operations",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation referencing Session 3 trace. The session trace is indirect; also, 302 redirects may preserve the original method per RFC 7231, so the claim that GET is always issued may be an oversimplification."
+        },
+        {
+          "type": "invariant",
+          "description": "Safe methods (GET, HEAD, OPTIONS, TRACE) should not modify server state; idempotent methods (GET, HEAD, PUT, DELETE, OPTIONS, TRACE) produce same result on repeated calls",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent documentation only. These are standard HTTP method properties but no trace or probe data confirms server-side behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Host: Mandatory in every HTTP/1.1 request; identifies the target virtual host",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with RFC but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Content-Length: Required when request body is present; must accurately reflect byte length of body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Transfer-Encoding: Alternative to Content-Length when body is present; 'chunked' allows streaming without known length",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Content-Type: Should be included for POST, PUT, and PATCH requests that have a body (e.g., application/json)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. 'Should' is appropriate but no trace or probe data confirms this in practice."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Authorization: Must be included when retrying after a 401 Unauthorized response; carries credentials for protected resources",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. The 'must' is strong; clients may lack credentials and simply fail. No trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Method: Must be one of: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH, CONNECT, TRACE; determines semantics (safe, idempotent, body requirements)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Standard HTTP method set but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Request-URI: Target resource path; '*' for server-level OPTIONS request",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Standard HTTP convention but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP REQUEST.Connection: 'keep-alive' (default) for persistent connections; 'close' to terminate connection after response",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Status-Code: 3-digit code: 2xx=success, 3xx=redirection, 4xx=client error, 5xx=server error; determines client behavior (retry auth on 401, follow redirect on 3xx, etc.)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Standard HTTP status code semantics but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Location: Must be present in 3xx redirect responses; provides the target URI for the client to follow",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. RFC 7231 requires Location for 301/302/303/307/308 but not all 3xx codes. No direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Body: MUST NOT be present in HEAD responses; absent for 204 No Content and 304 Not Modified; present for most other success/error responses",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Set-Cookie: Server-side session management; client stores and re-sends as Cookie header in subsequent requests",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Describes cookie mechanics but no trace or probe data confirms the round-trip behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Content-Length: Required when response body is present; must match actual body byte length",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP RESPONSE.Connection: 'close' signals connection termination after response; 'keep-alive' (default) allows further requests on same connection",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM Spec Agent field analysis only. Consistent with HTTP/1.1 spec but no direct trace or probe confirmation."
+        }
+      ]
+    },
+    "probe": {
+      "agent": "probe",
+      "probes_executed": 12,
+      "model_updates": [
+        {
+          "target": "CONNECTED -> REQUEST_SENT via GET",
+          "action": "no_change"
+        },
+        {
+          "target": "RESPONSE_RECEIVED -> REQUEST_SENT via GET",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+          "action": "no_change"
+        },
+        {
+          "target": "REDIRECT -> REQUEST_SENT via GET",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via POST",
+          "action": "no_change"
+        },
+        {
+          "target": "RESPONSE_RECEIVED -> REQUEST_SENT via POST",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via PUT",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via DELETE",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via HEAD",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via OPTIONS",
+          "action": "no_change"
+        },
+        {
+          "target": "CONNECTED -> REQUEST_SENT via PATCH",
+          "action": "no_change"
+        },
+        {
+          "target": "INIT -> CONNECTED via TCP_CONNECT",
+          "action": "no_change"
+        }
+      ],
+      "llm_tool_calls": 1,
+      "llm_plan_used": true
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 142,
+        "protocol": "HTTP",
+        "messages": {
+          "DELETE": {
+            "template": "DELETE <authorization> <host> <path> <version>\\r\\n",
+            "fields": {
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/1",
+                  "/resource/1"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.56
+          },
+          "GET": {
+            "template": "GET <authorization> <connection> <host> <path> <version>\\r\\n",
+            "fields": {
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "connection": {
+                "type": "string",
+                "examples": [
+                  "keep-alive"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "localhost",
+                  "api.example.com",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/",
+                  "/api/items",
+                  "/notfound",
+                  "/protected",
+                  "/redirect"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "AUTH_REQUIRED",
+              "CONNECTED",
+              "REDIRECT",
+              "RESPONSE_RECEIVED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 16,
+            "confidence": 1.0
+          },
+          "HEAD": {
+            "template": "HEAD <host> <path> <version>\\r\\n",
+            "fields": {
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/check"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "HTTP REQUEST": {
+            "template": "METHOD /path HTTP/1.1\\r\\nHost: example.com\\r\\n[headers]\\r\\n\\r\\n[optional body]",
+            "fields": {
+              "Accept": {
+                "type": "string",
+                "examples": [
+                  "Content negotiation; acceptable response MIME types"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Accept-Encoding": {
+                "type": "string",
+                "examples": [
+                  "Content negotiation; acceptable encodings"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "Credentials for protected resources (used after 401 response)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Body": {
+                "type": "string",
+                "examples": [
+                  "Optional payload; present for POST/PUT/PATCH"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cache-Control": {
+                "type": "string",
+                "examples": [
+                  "Caching directives for request"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "Persistent connection control: 'keep-alive' or 'close'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "Byte length of request body; required when body is present"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "MIME type of request body (required for POST/PUT/PATCH with body)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cookie": {
+                "type": "string",
+                "examples": [
+                  "Session/state data sent by client"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "HTTP-Version": {
+                "type": "string",
+                "examples": [
+                  "HTTP/1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "Required; identifies target virtual host"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "Method": {
+                "type": "string",
+                "examples": [
+                  "HTTP method token (GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH, CONNECT, TRACE)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Request-URI": {
+                "type": "string",
+                "examples": [
+                  "Target resource path (e.g., /path, or * for server-level OPTIONS)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Transfer-Encoding": {
+                "type": "string",
+                "examples": [
+                  "Alternative to Content-Length; e.g., 'chunked' for streaming"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "User-Agent": {
+                "type": "string",
+                "examples": [
+                  "Client identifier string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          },
+          "HTTP RESPONSE": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\\r\\nContent-Type: text/html\\r\\nContent-Length: <n>\\r\\n\\r\\n[optional body]",
+            "fields": {
+              "Body": {
+                "type": "string",
+                "examples": [
+                  "Optional payload; MUST NOT be present for HEAD responses; may be absent for 204/304"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cache-Control": {
+                "type": "string",
+                "examples": [
+                  "Caching directives for response"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "Persistent connection control: 'keep-alive' or 'close'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "Byte length of response body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "MIME type of response body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "HTTP-Version": {
+                "type": "string",
+                "examples": [
+                  "HTTP/1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Location": {
+                "type": "string",
+                "examples": [
+                  "Redirect target URI; present in 3xx responses"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Reason-Phrase": {
+                "type": "string",
+                "examples": [
+                  "Human-readable status description (e.g., OK, Not Found)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Set-Cookie": {
+                "type": "string",
+                "examples": [
+                  "Session/state data sent by server to client"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Status-Code": {
+                "type": "string",
+                "examples": [
+                  "3-digit status code (2xx success, 3xx redirection, 4xx client error, 5xx server error)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          },
+          "OPTIONS": {
+            "template": "OPTIONS <host> <path> <version>\\r\\n",
+            "fields": {
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api",
+                  "/resource"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.56
+          },
+          "PATCH": {
+            "template": "PATCH <content_length> <content_type> <host> <path> <version>\\r\\n",
+            "fields": {
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "15",
+                  "16"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/merge-patch+json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/2",
+                  "/item/42"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.56
+          },
+          "POST": {
+            "template": "POST <content_length> <content_type> <host> <path> <version>\\r\\n",
+            "fields": {
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "20",
+                  "27"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "localhost"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items",
+                  "/api/data"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED",
+              "RESPONSE_RECEIVED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "PUT": {
+            "template": "PUT <authorization> <content_length> <content_type> <host> <path> <version>\\r\\n",
+            "fields": {
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "15",
+                  "18"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/1",
+                  "/resource/1"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          }
+        },
+        "states": [
+          {
+            "name": "AUTH_REQUIRED",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "CLOSED",
+            "description": "",
+            "confidence": 0.8
+          },
+          {
+            "name": "CONNECTED",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "ERROR",
+            "description": "",
+            "confidence": 0.9
+          },
+          {
+            "name": "INIT",
+            "description": "",
+            "confidence": 1.0
+          },
+          {
+            "name": "REDIRECT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "REQUEST_SENT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "RESPONSE_RECEIVED",
+            "description": "",
+            "confidence": 0.95
+          }
+        ],
+        "transitions": [
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RESPONSE_RECEIVED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "AUTH_REQUIRED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "REDIRECT",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "POST",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RESPONSE_RECEIVED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "POST",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "PUT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "DELETE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "HEAD",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "OPTIONS",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "PATCH",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "INIT",
+            "to_state": "CONNECTED",
+            "message_type": "TCP_CONNECT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          }
+        ],
+        "ordering_rules": [
+          "After receiving 401 Unauthorized, client must retry the request with an Authorization header",
+          "After receiving a 3xx redirect response, client should follow the Location header to the new URI",
+          "Connection: close header signals the connection will be closed after the response is sent",
+          "Persistent connections (keep-alive) allow multiple request-response cycles on a single TCP connection",
+          "Request line must come first, followed by headers, then an empty line (CRLF CRLF), then optional body",
+          "State transition: INIT → TCP connect → CONNECTED → send request → RESPONSE_PENDING → receive response → IDLE (or AUTH_REQUIRED on 401, or follow redirect on 3xx, or CLOSED on Connection: close)",
+          "After 301/302 redirect, the client issues a new GET request to the Location URI before proceeding with other operations"
+        ],
+        "field_constraints": [
+          "Host header is mandatory in every HTTP/1.1 request",
+          "Content-Length or Transfer-Encoding is required when a request or response has a body",
+          "POST, PUT, and PATCH requests should include a body with a Content-Type header",
+          "HEAD response must not include a message body",
+          "OPTIONS * targets the server as a whole rather than a specific resource path",
+          "Safe methods (GET, HEAD, OPTIONS, TRACE) should not modify server state; idempotent methods (GET, HEAD, PUT, DELETE, OPTIONS, TRACE) produce same result on repeated calls",
+          "HTTP REQUEST.Host: Mandatory in every HTTP/1.1 request; identifies the target virtual host",
+          "HTTP REQUEST.Content-Length: Required when request body is present; must accurately reflect byte length of body",
+          "HTTP REQUEST.Transfer-Encoding: Alternative to Content-Length when body is present; 'chunked' allows streaming without known length",
+          "HTTP REQUEST.Content-Type: Should be included for POST, PUT, and PATCH requests that have a body (e.g., application/json)",
+          "HTTP REQUEST.Authorization: Must be included when retrying after a 401 Unauthorized response; carries credentials for protected resources",
+          "HTTP REQUEST.Method: Must be one of: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH, CONNECT, TRACE; determines semantics (safe, idempotent, body requirements)",
+          "HTTP REQUEST.Request-URI: Target resource path; '*' for server-level OPTIONS request",
+          "HTTP REQUEST.Connection: 'keep-alive' (default) for persistent connections; 'close' to terminate connection after response",
+          "HTTP RESPONSE.Status-Code: 3-digit code: 2xx=success, 3xx=redirection, 4xx=client error, 5xx=server error; determines client behavior (retry auth on 401, follow redirect on 3xx, etc.)",
+          "HTTP RESPONSE.Location: Must be present in 3xx redirect responses; provides the target URI for the client to follow",
+          "HTTP RESPONSE.Body: MUST NOT be present in HEAD responses; absent for 204 No Content and 304 Not Modified; present for most other success/error responses",
+          "HTTP RESPONSE.Set-Cookie: Server-side session management; client stores and re-sends as Cookie header in subsequent requests",
+          "HTTP RESPONSE.Content-Length: Required when response body is present; must match actual body byte length",
+          "HTTP RESPONSE.Connection: 'close' signals connection termination after response; 'keep-alive' (default) allows further requests on same connection"
+        ],
+        "dangerous_input_families": [
+          "long path",
+          "nested directory chain",
+          "oversized token",
+          "parent traversal",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 142,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 142,
+        "unused_message_types": [
+          "HTTP REQUEST",
+          "HTTP RESPONSE"
+        ],
+        "isolated_states": [
+          {
+            "state": "REQUEST_SENT",
+            "incoming": 11,
+            "outgoing": 0
+          },
+          {
+            "state": "RESPONSE_RECEIVED",
+            "incoming": 0,
+            "outgoing": 2
+          },
+          {
+            "state": "AUTH_REQUIRED",
+            "incoming": 0,
+            "outgoing": 1
+          },
+          {
+            "state": "REDIRECT",
+            "incoming": 0,
+            "outgoing": 1
+          },
+          {
+            "state": "ERROR",
+            "incoming": 0,
+            "outgoing": 0
+          },
+          {
+            "state": "CLOSED",
+            "incoming": 0,
+            "outgoing": 0
+          }
+        ],
+        "weak_transitions": [
+          {
+            "description": "CONNECTED -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "RESPONSE_RECEIVED -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "REDIRECT -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via POST",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "RESPONSE_RECEIVED -> REQUEST_SENT via POST",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via PUT",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via DELETE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via HEAD",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via OPTIONS",
+            "status": "hypothesis",
+            "confidence": 0.8
+          }
+        ],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 1.0,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: HTTP REQUEST, HTTP RESPONSE",
+          "Some inferred states are weakly connected in the current model; add directed seeds for: REQUEST_SENT, RESPONSE_RECEIVED, AUTH_REQUIRED, REDIRECT, ERROR"
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "HEAD",
+            "OPTIONS"
+          ],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: HTTP REQUEST, HTTP RESPONSE"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 48,
+      "repaired": 52
+    },
+    "llm_usage": {
+      "calls": 4,
+      "prompt_tokens": 7078,
+      "completion_tokens": 12178,
+      "total_tokens": 19256,
+      "reasoning_tokens": 4685
+    }
+  },
+  "llm_usage": {
+    "calls": 4,
+    "prompt_tokens": 7078,
+    "completion_tokens": 12178,
+    "total_tokens": 19256,
+    "reasoning_tokens": 4685
+  }
+}

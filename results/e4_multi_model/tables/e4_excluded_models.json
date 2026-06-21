@@ -1,0 +1,26 @@
+[
+  {
+    "model": "DeepSeek-Reasoner",
+    "expected_runs": 12,
+    "successful_runs": 0,
+    "failure_stage": "light_tool_check",
+    "reason": "Official thinking model does not support the current pipeline tool_choice=required setting.",
+    "included_in_main_table": "No"
+  },
+  {
+    "model": "Hunyuan-TurboS",
+    "expected_runs": 12,
+    "successful_runs": 0,
+    "failure_stage": "API authentication",
+    "reason": "The OpenAI-compatible Hunyuan endpoint requires a Hunyuan API Key; SecretId/SecretKey cannot be used as bearer API key.",
+    "included_in_main_table": "No"
+  },
+  {
+    "model": "Kimi-K2.6",
+    "expected_runs": 12,
+    "successful_runs": 0,
+    "failure_stage": "fallback used",
+    "reason": "The final Kimi slot uses the same-provider fallback Moonshot-V1-8K.",
+    "included_in_main_table": "No"
+  }
+]

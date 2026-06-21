@@ -1,0 +1,2406 @@
+{
+  "project_id": 84,
+  "label": "e4_Qwen-Flash_r2",
+  "protocol": "HTTP",
+  "provider": "Qwen",
+  "model": "qwen3.6-flash-2026-04-16",
+  "created_at": "2026-06-06T10:48:46.178626",
+  "counts": {
+    "messages": 13,
+    "states": 8,
+    "transitions": 12,
+    "invariants": 26,
+    "evidence": 126,
+    "probes": 12,
+    "traces": 7
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 0.9753,
+    "observed_message_coverage": 1.0,
+    "message_only_replay": 0.5714,
+    "msg_resp_replay": 0.7857,
+    "full_state_replay": 0.4911,
+    "strict_replay": 0.4911,
+    "relaxed_replay": 0.7857,
+    "session_replay": 0.4911,
+    "evidence_locatability": 0.9365,
+    "contradiction_rate": 0.0833,
+    "probe_expected_pass": 1.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 61.444
+  },
+  "message_types": [
+    "CONNECT",
+    "DELETE",
+    "GET",
+    "HEAD",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+    "RESPONSE_2XX",
+    "RESPONSE_3XX",
+    "RESPONSE_4XX",
+    "RESPONSE_5XX",
+    "TRACE"
+  ],
+  "states": [
+    "INIT",
+    "CONNECTED",
+    "REQUEST_SENT",
+    "RESPONSE_RECEIVED",
+    "AUTH_REQUIRED",
+    "REDIRECT",
+    "ERROR",
+    "CLOSED"
+  ],
+  "transitions": [
+    {
+      "from": "RESPONSE_RECEIVED",
+      "to": "CLOSED",
+      "via": "NONE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "ERROR",
+      "to": "CLOSED",
+      "via": "NONE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "AUTH_REQUIRED",
+      "to": "CLOSED",
+      "via": "NONE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "REDIRECT",
+      "to": "CLOSED",
+      "via": "NONE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "RESPONSE_RECEIVED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "AUTH_REQUIRED",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "disputed",
+      "confidence": 0.7
+    },
+    {
+      "from": "REDIRECT",
+      "to": "REQUEST_SENT",
+      "via": "GET",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "POST",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "RESPONSE_RECEIVED",
+      "to": "REQUEST_SENT",
+      "via": "POST",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "PUT",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "CONNECTED",
+      "to": "REQUEST_SENT",
+      "via": "DELETE",
+      "status": "hypothesis",
+      "confidence": 0.85
+    }
+  ],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "DELETE",
+        "OPTIONS",
+        "PATCH",
+        "CONNECT",
+        "TRACE",
+        "RESPONSE_2XX",
+        "RESPONSE_3XX",
+        "RESPONSE_4XX",
+        "RESPONSE_5XX"
+      ],
+      "invariants_created": [
+        "Host header is mandatory in every HTTP/1.1 request",
+        "Content-Length or Transfer-Encoding must be present when request has a body",
+        "POST, PUT, PATCH requests should include Content-Type header with body",
+        "HEAD response must not include a body",
+        "OPTIONS * is a server-level options request where path equals asterisk",
+        "Requests must follow the sequence: METHOD /path HTTP/1.1, then headers, then optional blank line, then optional body",
+        "Response must start with HTTP version, status code, and reason phrase, followed by headers and optional body",
+        "GET.Host: mandatory",
+        "HEAD.Host: mandatory",
+        "POST.Host: mandatory",
+        "POST.Content-Type: required when body present",
+        "POST.Content-Length: required when body present",
+        "PUT.Host: mandatory",
+        "PUT.Content-Type: required when body present",
+        "PUT.Content-Length: required when body present",
+        "DELETE.Host: mandatory",
+        "OPTIONS.Host: mandatory",
+        "PATCH.Host: mandatory",
+        "PATCH.Content-Type: required when body present",
+        "PATCH.Content-Length: required when body present",
+        "CONNECT.Host: mandatory",
+        "TRACE.Host: mandatory",
+        "RESPONSE_3XX.Location: required",
+        "RESPONSE_2XX.Content-Length: optional, used when body present",
+        "RESPONSE_4XX.Content-Length: optional, used when body present",
+        "RESPONSE_5XX.Content-Length: optional, used when body present"
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 6
+    },
+    "trace": {
+      "agent": "trace",
+      "events_parsed": 28,
+      "sessions_processed": 6,
+      "llm_tool_calls": 1,
+      "observation_tool_used": true,
+      "observation_summary": {
+        "message_types": 4,
+        "states": 8,
+        "sequence_patterns": 5
+      },
+      "fallback_used": false,
+      "message_types_updated": [],
+      "states_created": [
+        "INIT",
+        "CONNECTED",
+        "REQUEST_SENT",
+        "RESPONSE_RECEIVED",
+        "AUTH_REQUIRED",
+        "REDIRECT",
+        "ERROR",
+        "CLOSED"
+      ],
+      "transitions_created": [
+        "RESPONSE_RECEIVED → CLOSED via NONE",
+        "ERROR → CLOSED via NONE",
+        "AUTH_REQUIRED → CLOSED via NONE",
+        "REDIRECT → CLOSED via NONE",
+        "CONNECTED → REQUEST_SENT via GET",
+        "RESPONSE_RECEIVED → REQUEST_SENT via GET",
+        "AUTH_REQUIRED → REQUEST_SENT via GET",
+        "REDIRECT → REQUEST_SENT via GET",
+        "CONNECTED → REQUEST_SENT via POST",
+        "RESPONSE_RECEIVED → REQUEST_SENT via POST",
+        "CONNECTED → REQUEST_SENT via PUT",
+        "CONNECTED → REQUEST_SENT via DELETE"
+      ]
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 12,
+      "invariants_verified": 26,
+      "status_changes": [
+        {
+          "type": "transition",
+          "description": "RESPONSE_RECEIVED -> CLOSED via NONE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Evidence is from LLM trace analysis which suggests a possible outcome but does not provide definitive trace data showing this specific transition occurs in the observed sessions. Conservative classification as hypothesis due to lack of direct observational evidence."
+        },
+        {
+          "type": "transition",
+          "description": "ERROR -> CLOSED via NONE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Similar to above, LLM analysis suggests possibility but no concrete trace evidence confirms this transition path. Classified as hypothesis."
+        },
+        {
+          "type": "transition",
+          "description": "AUTH_REQUIRED -> CLOSED via NONE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "LLM analysis indicates potential closure after auth failure, but without explicit trace confirmation, remains a hypothesis."
+        },
+        {
+          "type": "transition",
+          "description": "REDIRECT -> CLOSED via NONE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "LLM analysis suggests session may close if redirect handling fails, but lacks direct trace verification. Hypothesis status maintained."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Heuristic trace augmentation explicitly shows this transition. While augmented, it aligns with standard HTTP client behavior and is directly evidenced by the trace data provided."
+        },
+        {
+          "type": "transition",
+          "description": "RESPONSE_RECEIVED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Heuristic trace augmentation shows this transition, representing keep-alive connections where subsequent requests are sent after receiving a response. Directly evidenced by trace."
+        },
+        {
+          "type": "transition",
+          "description": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+          "old_status": "hypothesis",
+          "new_status": "disputed",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "This transition is logically inconsistent. If authentication is required (AUTH_REQUIRED), the client should typically send credentials or handle auth challenge, not immediately send another GET request. The heuristic augmentation likely represents an error or misclassification. Disputed based on protocol logic."
+        },
+        {
+          "type": "transition",
+          "description": "CONNECTED -> REQUEST_SENT via POST",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Heuristic trace augmentation explicitly shows this transition. Standard HTTP client behavior, directly evidenced by trace."
+        },
+        {
+          "type": "transition",
+          "description": "RESPONSE_RECEIVED -> REQUEST_SENT via POST",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Heuristic trace augmentation shows this transition for keep-alive POST requests. Directly evidenced by trace."
+        },
+        {
+          "type": "invariant",
+          "description": "Host header is mandatory in every HTTP/1.1 request",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly supported by HTTP/1.1 specification documentation cited in evidence. This is a well-established RFC requirement."
+        },
+        {
+          "type": "invariant",
+          "description": "Content-Length or Transfer-Encoding must be present when request has a body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly supported by HTTP/1.1 specification documentation. This is a fundamental requirement for message framing in HTTP/1.1."
+        },
+        {
+          "type": "invariant",
+          "description": "POST, PUT, PATCH requests should include Content-Type header with body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by specification documentation. While 'should' rather than 'must', it is a strong normative recommendation in the spec for proper content negotiation."
+        },
+        {
+          "type": "invariant",
+          "description": "HEAD response must not include a body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly supported by HTTP/1.1 specification. This is a clear normative requirement."
+        },
+        {
+          "type": "invariant",
+          "description": "OPTIONS * is a server-level options request where path equals asterisk",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by specification documentation describing the OPTIONS method with asterisk path for server-wide options."
+        },
+        {
+          "type": "invariant",
+          "description": "Requests must follow the sequence: METHOD /path HTTP/1.1, then headers, then optional blank line, then optional body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly supported by HTTP/1.1 request format specification. This describes the canonical request structure."
+        },
+        {
+          "type": "invariant",
+          "description": "Response must start with HTTP version, status code, and reason phrase, followed by headers and optional body",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly supported by HTTP/1.1 response format specification. This describes the canonical response structure."
+        },
+        {
+          "type": "invariant",
+          "description": "GET.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including GET."
+        },
+        {
+          "type": "invariant",
+          "description": "HEAD.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including HEAD."
+        },
+        {
+          "type": "invariant",
+          "description": "POST.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including POST."
+        },
+        {
+          "type": "invariant",
+          "description": "POST.Content-Type: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Type is required when a POST request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "POST.Content-Length: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length (or Transfer-Encoding) is required when a POST request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "PUT.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including PUT."
+        },
+        {
+          "type": "invariant",
+          "description": "PUT.Content-Type: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Type is required when a PUT request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "PUT.Content-Length: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length (or Transfer-Encoding) is required when a PUT request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "DELETE.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including DELETE."
+        },
+        {
+          "type": "invariant",
+          "description": "OPTIONS.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including OPTIONS."
+        },
+        {
+          "type": "invariant",
+          "description": "PATCH.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for all HTTP/1.1 requests including PATCH."
+        },
+        {
+          "type": "invariant",
+          "description": "PATCH.Content-Type: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Type is required when a PATCH request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "PATCH.Content-Length: required when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length (or Transfer-Encoding) is required when a PATCH request includes a body."
+        },
+        {
+          "type": "invariant",
+          "description": "CONNECT.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for CONNECT requests."
+        },
+        {
+          "type": "invariant",
+          "description": "TRACE.Host: mandatory",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Host header is mandatory for TRACE requests."
+        },
+        {
+          "type": "invariant",
+          "description": "RESPONSE_3XX.Location: required",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Location header is required in 3xx redirection responses per HTTP specification."
+        },
+        {
+          "type": "invariant",
+          "description": "RESPONSE_2XX.Content-Length: optional, used when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length is optional in 2xx responses and only needed when a body is present."
+        },
+        {
+          "type": "invariant",
+          "description": "RESPONSE_4XX.Content-Length: optional, used when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length is optional in 4xx responses and only needed when a body is present."
+        },
+        {
+          "type": "invariant",
+          "description": "RESPONSE_5XX.Content-Length: optional, used when body present",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Supported by field analysis documentation. Content-Length is optional in 5xx responses and only needed when a body is present."
+        }
+      ]
+    },
+    "probe": {
+      "agent": "probe",
+      "probes_executed": 12,
+      "model_updates": [
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 2]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 3]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 4]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 5]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 6]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 7]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 8]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 9]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 10]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 11]",
+          "action": "no_change"
+        },
+        {
+          "target": "AUTH_REQUIRED -> REQUEST_SENT via GET [replicate 12]",
+          "action": "no_change"
+        }
+      ],
+      "llm_tool_calls": 1,
+      "llm_plan_used": true
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 84,
+        "protocol": "HTTP",
+        "messages": {
+          "CONNECT": {
+            "template": "CONNECT host:port HTTP/1.1\r\nHost: <host>:<port>\r\n[Proxy-Authorization: <credentials>]\r\n\r\n",
+            "fields": {
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (host:port)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "Proxy-Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "authority": {
+                "type": "string",
+                "examples": [
+                  "string (host:port)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "CONNECT"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "HTTP/1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.9
+          },
+          "DELETE": {
+            "template": "DELETE /path HTTP/1.1\r\nHost: <host>\r\n[Authorization: <credentials>]\r\n\r\n",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "DELETE"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/1",
+                  "/resource/1"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "GET": {
+            "template": "GET /path HTTP/1.1\r\nHost: <host>\r\n[User-Agent: <agent>]\r\n[Accept: <media-range>]\r\n[Authorization: <credentials>]\r\n[Cookie: <cookie-data>]\r\n[Cache-Control: <directive>]\r\n\r\n",
+            "fields": {
+              "Accept": {
+                "type": "string",
+                "examples": [
+                  "optional, media-range"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cache-Control": {
+                "type": "string",
+                "examples": [
+                  "optional, directive"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cookie": {
+                "type": "string",
+                "examples": [
+                  "optional, cookie-data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "User-Agent": {
+                "type": "string",
+                "examples": [
+                  "optional, string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "connection": {
+                "type": "string",
+                "examples": [
+                  "keep-alive"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "localhost",
+                  "api.example.com",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "GET"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/",
+                  "/api/items",
+                  "/notfound",
+                  "/protected",
+                  "/redirect"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "AUTH_REQUIRED",
+              "CONNECTED",
+              "REDIRECT",
+              "RESPONSE_RECEIVED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 16,
+            "confidence": 0.95
+          },
+          "HEAD": {
+            "template": "HEAD /path HTTP/1.1\r\nHost: <host>\r\n[User-Agent: <agent>]\r\n[Accept: <media-range>]\r\n[Authorization: <credentials>]\r\n\r\n",
+            "fields": {
+              "Accept": {
+                "type": "string",
+                "examples": [
+                  "optional, media-range"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "User-Agent": {
+                "type": "string",
+                "examples": [
+                  "optional, string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "HEAD"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/check"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "OPTIONS": {
+            "template": "OPTIONS * HTTP/1.1\r\nHost: <host>\r\n[Authorization: <credentials>]\r\n\r\nOR\nOPTIONS /path HTTP/1.1\r\nHost: <host>\r\n[Authorization: <credentials>]\r\n\r\n",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "OPTIONS"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api",
+                  "/resource"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "PATCH": {
+            "template": "PATCH /path HTTP/1.1\r\nHost: <host>\r\nContent-Type: <mime-type>\r\nContent-Length: <n>\r\n[Authorization: <credentials>]\r\n\r\n<body>",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "required when body present, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "required when body present, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "15",
+                  "16"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/merge-patch+json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "server.test"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "PATCH"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/2",
+                  "/item/42"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "POST": {
+            "template": "POST /path HTTP/1.1\r\nHost: <host>\r\nContent-Type: <mime-type>\r\nContent-Length: <n>\r\n[Authorization: <credentials>]\r\n[Cookie: <cookie-data>]\r\n\r\n<body>",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "required when body present, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "required when body present, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Cookie": {
+                "type": "string",
+                "examples": [
+                  "optional, cookie-data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "20",
+                  "27"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "localhost"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "POST"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items",
+                  "/api/data"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED",
+              "RESPONSE_RECEIVED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "PUT": {
+            "template": "PUT /path HTTP/1.1\r\nHost: <host>\r\nContent-Type: <mime-type>\r\nContent-Length: <n>\r\n[Authorization: <credentials>]\r\n\r\n<body>",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "required when body present, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "required when body present, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "authorization": {
+                "type": "string",
+                "examples": [
+                  "Basic dXNlcjpwYXNz..."
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "content_length": {
+                "type": "integer",
+                "examples": [
+                  "15",
+                  "18"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "content_type": {
+                "type": "string",
+                "examples": [
+                  "application/json"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "host": {
+                "type": "host",
+                "examples": [
+                  "localhost:8080",
+                  "api.example.com"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "PUT"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "/api/items/1",
+                  "/resource/1"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "CONNECTED"
+            ],
+            "postconditions": [
+              "REQUEST_SENT"
+            ],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 2,
+            "confidence": 0.95
+          },
+          "RESPONSE_2XX": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\r\n[Content-Type: <mime-type>]\r\n[Content-Length: <n>]\r\n[Location: <uri>]\r\n[Set-Cookie: <cookie-data>]\r\n[Cache-Control: <directive>]\r\nConnection: <keep-alive|close>\r\n\r\n[optional body]",
+            "fields": {
+              "Cache-Control": {
+                "type": "string",
+                "examples": [
+                  "optional, directive"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "optional, keep-alive or close"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "optional, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "optional, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Location": {
+                "type": "string",
+                "examples": [
+                  "optional, URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Set-Cookie": {
+                "type": "string",
+                "examples": [
+                  "optional, cookie-data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "reason-phrase": {
+                "type": "string",
+                "examples": [
+                  "string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "status-code": {
+                "type": "string",
+                "examples": [
+                  "integer (200-299)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.95
+          },
+          "RESPONSE_3XX": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\r\nLocation: <uri>\r\n[Content-Length: <n>]\r\nConnection: <keep-alive|close>\r\n\r\n[optional body]",
+            "fields": {
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "optional, keep-alive or close"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "optional, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Location": {
+                "type": "string",
+                "examples": [
+                  "required, URI redirect target"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "reason-phrase": {
+                "type": "string",
+                "examples": [
+                  "string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "status-code": {
+                "type": "string",
+                "examples": [
+                  "integer (300-399)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.95
+          },
+          "RESPONSE_4XX": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\r\n[Content-Type: <mime-type>]\r\n[Content-Length: <n>]\r\nConnection: <keep-alive|close>\r\n\r\n[optional body]",
+            "fields": {
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "optional, keep-alive or close"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "optional, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "optional, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "reason-phrase": {
+                "type": "string",
+                "examples": [
+                  "string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "status-code": {
+                "type": "string",
+                "examples": [
+                  "integer (400-499)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.95
+          },
+          "RESPONSE_5XX": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\r\n[Content-Type: <mime-type>]\r\n[Content-Length: <n>]\r\nConnection: <keep-alive|close>\r\n\r\n[optional body]",
+            "fields": {
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "optional, keep-alive or close"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "optional, integer"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "optional, MIME type"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "body": {
+                "type": "string",
+                "examples": [
+                  "optional, binary/data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "reason-phrase": {
+                "type": "string",
+                "examples": [
+                  "string"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "status-code": {
+                "type": "string",
+                "examples": [
+                  "integer (500-599)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.95
+          },
+          "TRACE": {
+            "template": "TRACE /path HTTP/1.1\r\nHost: <host>\r\n[Authorization: <credentials>]\r\n\r\n",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "optional, credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "required, string (virtual host)"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "examples": [
+                  "TRACE"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "path": {
+                "type": "path",
+                "examples": [
+                  "string (URI path)"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "examples": [
+                  "HTTP/1.1"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "long path",
+              "parent traversal",
+              "nested directory chain"
+            ],
+            "observed_count": 0,
+            "confidence": 0.9
+          }
+        },
+        "states": [
+          {
+            "name": "AUTH_REQUIRED",
+            "description": "",
+            "confidence": 0.96
+          },
+          {
+            "name": "CLOSED",
+            "description": "",
+            "confidence": 0.9
+          },
+          {
+            "name": "CONNECTED",
+            "description": "",
+            "confidence": 0.98
+          },
+          {
+            "name": "ERROR",
+            "description": "",
+            "confidence": 0.94
+          },
+          {
+            "name": "INIT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "REDIRECT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "REQUEST_SENT",
+            "description": "",
+            "confidence": 0.99
+          },
+          {
+            "name": "RESPONSE_RECEIVED",
+            "description": "",
+            "confidence": 0.97
+          }
+        ],
+        "transitions": [
+          {
+            "from_state": "RESPONSE_RECEIVED",
+            "to_state": "CLOSED",
+            "message_type": "NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "ERROR",
+            "to_state": "CLOSED",
+            "message_type": "NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "AUTH_REQUIRED",
+            "to_state": "CLOSED",
+            "message_type": "NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "REDIRECT",
+            "to_state": "CLOSED",
+            "message_type": "NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "RESPONSE_RECEIVED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "AUTH_REQUIRED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "disputed",
+            "confidence": 0.7
+          },
+          {
+            "from_state": "REDIRECT",
+            "to_state": "REQUEST_SENT",
+            "message_type": "GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "POST",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "RESPONSE_RECEIVED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "POST",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "PUT",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "CONNECTED",
+            "to_state": "REQUEST_SENT",
+            "message_type": "DELETE",
+            "status": "hypothesis",
+            "confidence": 0.85
+          }
+        ],
+        "ordering_rules": [
+          "Requests must follow the sequence: METHOD /path HTTP/1.1, then headers, then optional blank line, then optional body",
+          "Response must start with HTTP version, status code, and reason phrase, followed by headers and optional body"
+        ],
+        "field_constraints": [
+          "Host header is mandatory in every HTTP/1.1 request",
+          "Content-Length or Transfer-Encoding must be present when request has a body",
+          "POST, PUT, PATCH requests should include Content-Type header with body",
+          "HEAD response must not include a body",
+          "OPTIONS * is a server-level options request where path equals asterisk",
+          "GET.Host: mandatory",
+          "HEAD.Host: mandatory",
+          "POST.Host: mandatory",
+          "POST.Content-Type: required when body present",
+          "POST.Content-Length: required when body present",
+          "PUT.Host: mandatory",
+          "PUT.Content-Type: required when body present",
+          "PUT.Content-Length: required when body present",
+          "DELETE.Host: mandatory",
+          "OPTIONS.Host: mandatory",
+          "PATCH.Host: mandatory",
+          "PATCH.Content-Type: required when body present",
+          "PATCH.Content-Length: required when body present",
+          "CONNECT.Host: mandatory",
+          "TRACE.Host: mandatory",
+          "RESPONSE_3XX.Location: required",
+          "RESPONSE_2XX.Content-Length: optional, used when body present",
+          "RESPONSE_4XX.Content-Length: optional, used when body present",
+          "RESPONSE_5XX.Content-Length: optional, used when body present"
+        ],
+        "dangerous_input_families": [
+          "long path",
+          "nested directory chain",
+          "oversized token",
+          "parent traversal",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 84,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 84,
+        "unused_message_types": [
+          "CONNECT",
+          "HEAD",
+          "OPTIONS",
+          "PATCH",
+          "RESPONSE_2XX",
+          "RESPONSE_3XX",
+          "RESPONSE_4XX",
+          "RESPONSE_5XX",
+          "TRACE"
+        ],
+        "isolated_states": [
+          {
+            "state": "INIT",
+            "incoming": 0,
+            "outgoing": 0
+          },
+          {
+            "state": "CONNECTED",
+            "incoming": 0,
+            "outgoing": 4
+          },
+          {
+            "state": "REQUEST_SENT",
+            "incoming": 8,
+            "outgoing": 0
+          },
+          {
+            "state": "RESPONSE_RECEIVED",
+            "incoming": 0,
+            "outgoing": 3
+          },
+          {
+            "state": "AUTH_REQUIRED",
+            "incoming": 0,
+            "outgoing": 2
+          },
+          {
+            "state": "REDIRECT",
+            "incoming": 0,
+            "outgoing": 2
+          },
+          {
+            "state": "ERROR",
+            "incoming": 0,
+            "outgoing": 1
+          }
+        ],
+        "weak_transitions": [
+          {
+            "description": "AUTH_REQUIRED -> REQUEST_SENT via GET",
+            "status": "disputed",
+            "confidence": 0.7
+          },
+          {
+            "description": "RESPONSE_RECEIVED -> CLOSED via NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "ERROR -> CLOSED via NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "AUTH_REQUIRED -> CLOSED via NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "REDIRECT -> CLOSED via NONE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "description": "RESPONSE_RECEIVED -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "description": "REDIRECT -> REQUEST_SENT via GET",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "description": "CONNECTED -> REQUEST_SENT via POST",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "description": "RESPONSE_RECEIVED -> REQUEST_SENT via POST",
+            "status": "hypothesis",
+            "confidence": 0.85
+          }
+        ],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 1.0,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: CONNECT, HEAD, OPTIONS, PATCH, RESPONSE_2XX, RESPONSE_3XX, RESPONSE_4XX, RESPONSE_5XX",
+          "Some inferred states are weakly connected in the current model; add directed seeds for: INIT, CONNECTED, REQUEST_SENT, RESPONSE_RECEIVED, AUTH_REQUIRED"
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [
+            "GET",
+            "NONE",
+            "POST",
+            "PUT",
+            "DELETE"
+          ],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: CONNECT, HEAD, OPTIONS, PATCH, RESPONSE_2XX, RESPONSE_3XX, RESPONSE_4XX, RESPONSE_5XX"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 51,
+      "repaired": 55
+    },
+    "llm_usage": {
+      "calls": 4,
+      "prompt_tokens": 7020,
+      "completion_tokens": 8701,
+      "total_tokens": 15721,
+      "reasoning_tokens": 0
+    }
+  },
+  "llm_usage": {
+    "calls": 4,
+    "prompt_tokens": 7020,
+    "completion_tokens": 8701,
+    "total_tokens": 15721,
+    "reasoning_tokens": 0
+  }
+}

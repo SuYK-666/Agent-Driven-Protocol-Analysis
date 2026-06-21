@@ -1,4 +1,4 @@
-"""Trace Agent — recovers message patterns, states, and transitions from traces.
+﻿"""Trace Agent 鈥?recovers message patterns, states, and transitions from traces.
 
 Task 6 (LLM-upgraded): Uses Gemini function calling to infer protocol states,
 transitions, and message patterns from session trace data.
@@ -17,6 +17,14 @@ from ..tools.protocol_tools import extract_message_types
 from ..core.llm_client import call_with_tools
 
 logger = logging.getLogger(__name__)
+
+def _safe_float(value, default: float) -> float:
+    try:
+        if value in (None, ""):
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
 
 
 def _is_valid_message_type_name(name: str) -> bool:
@@ -178,9 +186,9 @@ def _format_sessions_for_llm(all_sessions: list[list[dict]]) -> str:
             if resp:
                 code = resp.get("code", "?")
                 text = resp.get("text", "")[:60]
-                lines.append(f"  C→S: {mt}  |  S→C: {code} {text}")
+                lines.append(f"  C鈫扴: {mt}  |  S鈫扖: {code} {text}")
             else:
-                lines.append(f"  C→S: {mt}")
+                lines.append(f"  C鈫扴: {mt}")
     return "\n".join(lines)
 
 
@@ -242,7 +250,7 @@ def _augment_trace_model(project_id: int, session: Session, adapter, heuristic_s
             continue
         rank = priority_rank.get(msg, len(priority_rank) + 1)
         prioritized_candidates.append(
-            (rank, from_s, to_s, msg, float(args.get("confidence", 0.72)))
+            (rank, from_s, to_s, msg, _safe_float(args.get("confidence"), 0.72))
         )
 
     prioritized_candidates.sort(key=lambda item: item[0])
@@ -283,7 +291,7 @@ def _augment_trace_model(project_id: int, session: Session, adapter, heuristic_s
             score=conf,
         )
         session.add(ev)
-        created_trans.append(f"{from_s} → {to_s} via {msg}")
+        created_trans.append(f"{from_s} 鈫?{to_s} via {msg}")
         existing_message_types.add(msg)
         current_transition_count += 1
 
@@ -307,7 +315,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
             )
         ).first()
         if existing:
-            existing.confidence = max(existing.confidence, float(args.get("confidence", 0.6)))
+            existing.confidence = max(existing.confidence, _safe_float(args.get("confidence"), 0.6))
             session.add(existing)
             claim_id = existing.id
         else:
@@ -316,7 +324,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
                 name=name,
                 template="",
                 fields_json="{}",
-                confidence=float(args.get("confidence", 0.6)),
+                confidence=_safe_float(args.get("confidence"), 0.6),
             )
             session.add(mt)
             session.commit()
@@ -337,7 +345,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
             source_type="trace",
             source_ref="LLM Trace Agent structured observation",
             snippet=snippet[:500],
-            score=float(args.get("confidence", 0.6)),
+            score=_safe_float(args.get("confidence"), 0.6),
         )
         session.add(ev)
         observation_summary["message_types"] += 1
@@ -353,7 +361,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
             )
         ).first()
         if existing:
-            existing.confidence = max(existing.confidence, float(args.get("confidence", 0.65)))
+            existing.confidence = max(existing.confidence, _safe_float(args.get("confidence"), 0.65))
             session.add(existing)
             claim_id = existing.id
         else:
@@ -361,7 +369,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
                 project_id=project_id,
                 name=name,
                 description="",
-                confidence=float(args.get("confidence", 0.65)),
+                confidence=_safe_float(args.get("confidence"), 0.65),
             )
             session.add(state)
             session.commit()
@@ -376,7 +384,7 @@ def _store_structured_observations(project_id: int, session: Session, observatio
             source_type="trace",
             source_ref="LLM Trace Agent structured observation",
             snippet=args.get("evidence", name)[:500],
-            score=float(args.get("confidence", 0.65)),
+            score=_safe_float(args.get("confidence"), 0.65),
         )
         session.add(ev)
         observation_summary["states"] += 1
@@ -510,7 +518,7 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                 project_id=project_id,
                 name=name,
                 description=args.get("description", ""),
-                confidence=float(args.get("confidence", 0.7)),
+                confidence=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(state)
             session.commit()
@@ -522,7 +530,7 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                 source_type="trace",
                 source_ref="LLM Trace Agent final analysis",
                 snippet=args.get("evidence", args.get("description", name))[:500],
-                score=float(args.get("confidence", 0.7)),
+                score=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(ev)
             created_states.append(name)
@@ -549,7 +557,7 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                 from_state=from_s,
                 to_state=to_s,
                 message_type=msg,
-                confidence=float(args.get("confidence", 0.7)),
+                confidence=_safe_float(args.get("confidence"), 0.7),
                 status="hypothesis",
             )
             session.add(trans)
@@ -567,10 +575,10 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                 source_type="trace",
                 source_ref="LLM Trace Agent final analysis",
                 snippet=snippet[:500],
-                score=float(args.get("confidence", 0.7)),
+                score=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(ev)
-            created_trans.append(f"{from_s} → {to_s} via {msg}")
+            created_trans.append(f"{from_s} 鈫?{to_s} via {msg}")
 
     for args in payload.get("observed_message_types", []):
         name = args.get("name", "").strip().upper()
@@ -591,7 +599,7 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                     name=name,
                     template="",
                     fields_json="{}",
-                    confidence=float(args.get("confidence", 0.6)),
+                    confidence=_safe_float(args.get("confidence"), 0.6),
                 )
                 session.add(mt)
                 session.commit()
@@ -603,18 +611,33 @@ def run_trace_agent(project_id: int, session: Session) -> dict:
                     source_type="trace",
                     source_ref="LLM Trace Agent final analysis",
                     snippet=f"{name} seen ~{args.get('observed_count', '?')} times",
-                    score=float(args.get("confidence", 0.6)),
+                    score=_safe_float(args.get("confidence"), 0.6),
                 )
                 session.add(ev)
                 created_mt.append(name)
 
-    # Heuristic augmentation disabled — agent-only mode
+    # Heuristic augmentation disabled 鈥?agent-only mode
     # (was: if should_augment: _augment_trace_model(...))
+
+    min_transition_count = adapter.trace_augmentation_min_transitions()
+    should_augment = len(created_trans) < min_transition_count
+    if should_augment:
+        _augment_trace_model(
+            project_id=project_id,
+            session=session,
+            adapter=adapter,
+            heuristic_states=heuristic_states,
+            mt_result=mt_result,
+            created_states=created_states,
+            created_trans=created_trans,
+            min_transition_count=min_transition_count,
+            priority_messages=adapter.trace_augmentation_priority_messages(),
+        )
 
     if not payload and not observation_payload:
         raise RuntimeError(
             f"Trace Agent: LLM returned no tool calls for project {project_id} "
-            "after all retries — aborting without fallback"
+            "after all retries 鈥?aborting without fallback"
         )
     elif not payload and observation_payload:
         logger.warning("Trace Agent: observation tool used but no final analysis tool call")
@@ -730,6 +753,7 @@ def _apply_state_fallback(project_id: int, session: Session,
             ev = Evidence(project_id=project_id, claim_type="transition",
                           claim_id=t.id, source_type="trace",
                           source_ref="rule-based fallback",
-                          snippet=f"{from_s}→{to_s} via {msg}", score=conf)
+                          snippet=f"{from_s}->{to_s} via {msg}", score=conf)
             session.add(ev)
-            created_trans.append(f"{from_s}→{to_s} via {msg}")
+            created_trans.append(f"{from_s}->{to_s} via {msg}")
+

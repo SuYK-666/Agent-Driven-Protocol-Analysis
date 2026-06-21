@@ -1,4 +1,4 @@
-"""Spec Agent — extracts protocol knowledge from documentation summaries.
+﻿"""Spec Agent 鈥?extracts protocol knowledge from documentation summaries.
 
 Task 5 (LLM-upgraded): Uses Gemini function calling to extract message types,
 field semantics, ordering rules, and candidate protocol rules from docs and
@@ -17,6 +17,14 @@ from ..tools.ftp_parser import parse_ftp_session
 from ..core.llm_client import call_with_tools
 
 logger = logging.getLogger(__name__)
+
+def _safe_float(value, default: float) -> float:
+    try:
+        if value in (None, ""):
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
 
 # ---------------------------------------------------------------------------
 # Tool schemas for LLM function calling
@@ -95,7 +103,7 @@ Guidelines:
 - Include commands observed in traces even if they are extension commands from server-specific implementations
 - Do not record server response pseudo-types such as RESP_220 or RESP_530 as message_types
 - Set confidence based on how strongly the evidence supports the claim (0.7-0.9 for doc evidence, 0.8-0.95 for observed traces)
-- Be thorough — extract all commands and rules you can identify
+- Be thorough 鈥?extract all commands and rules you can identify
 - Return one comprehensive batch, not many small calls"""
 
 
@@ -112,7 +120,7 @@ def _format_trace_summary(traces: list) -> str:
                 mt = ev.get("message_type", "?")
                 resp = ev.get("response")
                 code = resp.get("code", "?") if resp else "?"
-                events.append(f"  {mt} → {code}")
+                events.append(f"  {mt} 鈫?{code}")
         except Exception:
             raw = trace.raw_content[:200]
             events = [f"  (raw): {raw}"]
@@ -196,7 +204,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                 name=name,
                 template=args.get("template", ""),
                 fields_json=json.dumps(args.get("fields", {})),
-                confidence=float(args.get("confidence", 0.7)),
+                confidence=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(mt)
             session.commit()
@@ -208,7 +216,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                 source_type="doc",
                 source_ref="LLM Spec Agent (Gemini function calling)",
                 snippet=args.get("description", name),
-                score=float(args.get("confidence", 0.7)),
+                score=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(ev)
             created_message_types.append(name)
@@ -228,7 +236,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                 project_id=project_id,
                 rule_text=rule_text,
                 rule_type=args.get("rule_type", "ordering"),
-                confidence=float(args.get("confidence", 0.7)),
+                confidence=_safe_float(args.get("confidence"), 0.7),
                 status="hypothesis",
             )
             session.add(inv)
@@ -242,7 +250,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                 source_type="doc",
                 source_ref="LLM Spec Agent (Gemini function calling)",
                 snippet=snippet[:500],
-                score=float(args.get("confidence", 0.7)),
+                score=_safe_float(args.get("confidence"), 0.7),
             )
             session.add(ev)
             created_invariants.append(rule_text)
@@ -264,7 +272,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                     project_id=project_id,
                     rule_text=rule_text,
                     rule_type="field_constraint",
-                    confidence=float(args.get("confidence", 0.7)),
+                    confidence=_safe_float(args.get("confidence"), 0.7),
                     status="hypothesis",
                 )
                 session.add(inv)
@@ -277,7 +285,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
                     source_type="doc",
                     source_ref="LLM Spec Agent field analysis",
                     snippet=rule_text,
-                    score=float(args.get("confidence", 0.7)),
+                    score=_safe_float(args.get("confidence"), 0.7),
                 )
                 session.add(ev)
                 created_invariants.append(rule_text)
@@ -285,7 +293,7 @@ def run_spec_agent(project_id: int, session: Session) -> dict:
     if not payload:
         raise RuntimeError(
             f"Spec Agent: LLM returned no usable tool calls for project {project_id} "
-            "after all retries — aborting without fallback"
+            "after all retries 鈥?aborting without fallback"
         )
 
     session.commit()
@@ -363,3 +371,4 @@ def _apply_fallback(project_id: int, session: Session,
                           source_ref="rule-based fallback", snippet=rule_text, score=conf)
             session.add(ev)
             created_inv.append(rule_text)
+

@@ -33,7 +33,7 @@ class GenericTextProtocolAdapter:
         data_dir = Path(project_root) / "data"
         path = data_dir / "docs" / self.doc_filename
         if path.exists():
-            return [path.read_text()]
+            return [path.read_text(encoding="utf-8")]
         return []
 
     def load_trace_inputs(self, project_root: str) -> list[str]:
@@ -41,7 +41,7 @@ class GenericTextProtocolAdapter:
         path = data_dir / "traces" / self.trace_filename
         if not path.exists():
             return []
-        text = path.read_text()
+        text = path.read_text(encoding="utf-8")
         return [session.strip() for session in text.split("---") if session.strip()]
 
     def load_seed_inputs(self, project_root: str) -> list[str]:
@@ -106,7 +106,7 @@ class GenericTextProtocolAdapter:
     def probe_system_prompt(self) -> str:
         return (
             f"You are a conservative {self.name} probe planner. "
-            "Choose up to three high-value probes and call the tool exactly once."
+            "Choose up to twelve high-value probes and call the tool exactly once."
         )
 
     def parse_session(self, raw_text: str) -> list[dict]:
@@ -229,9 +229,9 @@ class GenericTextProtocolAdapter:
             for t in transitions:
                 if t.status == "hypothesis":
                     targets.append({"type": "transition", "claim": t, "description": f"{t.from_state} -> {t.to_state} via {t.message_type}"})
-                    if len(targets) >= 3:
+                    if len(targets) >= 12:
                         break
-        return targets[:3]
+        return targets[:12]
 
     def generate_probe_commands(self, target: dict) -> list[str]:
         claim = target["claim"]

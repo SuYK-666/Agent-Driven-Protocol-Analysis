@@ -1,0 +1,57 @@
+[
+  {
+    "protocol": "FTP",
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "message_coverage": 1.0,
+    "message_only_replay": 0.3421,
+    "msg_resp_replay": 0.4176,
+    "full_state_replay": 0.3654,
+    "evidence_locatability": 0.9542,
+    "contradiction_rate": 0.0
+  },
+  {
+    "protocol": "SMTP",
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "message_coverage": 1.0,
+    "message_only_replay": 1.0,
+    "msg_resp_replay": 1.0,
+    "full_state_replay": 0.8333,
+    "evidence_locatability": 0.921,
+    "contradiction_rate": 0.0238
+  },
+  {
+    "protocol": "RTSP",
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "message_coverage": 1.0,
+    "message_only_replay": 0.8571,
+    "msg_resp_replay": 0.9474,
+    "full_state_replay": 0.812,
+    "evidence_locatability": 0.8935,
+    "contradiction_rate": 0.0333
+  },
+  {
+    "protocol": "HTTP",
+    "schema_pass": 1.0,
+    "reference_integrity": 0.997,
+    "message_coverage": 1.0,
+    "message_only_replay": 1.0,
+    "msg_resp_replay": 1.0,
+    "full_state_replay": 0.5417,
+    "evidence_locatability": 0.8928,
+    "contradiction_rate": 0.0
+  },
+  {
+    "protocol": "Avg.",
+    "schema_pass": 1.0,
+    "reference_integrity": 0.9992,
+    "message_coverage": 1.0,
+    "message_only_replay": 0.7998,
+    "msg_resp_replay": 0.8413,
+    "full_state_replay": 0.6381,
+    "evidence_locatability": 0.9154,
+    "contradiction_rate": 0.0143
+  }
+]

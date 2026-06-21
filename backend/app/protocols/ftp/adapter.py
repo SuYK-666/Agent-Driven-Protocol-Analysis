@@ -49,7 +49,7 @@ Focus on patterns: what command sequences lead to state changes? What response c
 
 _PROBE_SYSTEM_PROMPT = """You are a conservative FTP probe planner.
 
-Choose up to three high-value probes that can be executed against a local FTP server.
+Choose up to twelve high-value probes that can be executed against a local FTP server.
 Call the tool exactly once.
 
 Guidelines:
@@ -75,14 +75,14 @@ class FTPProtocolAdapter:
         doc_path = data_dir / "docs" / "ftp_summary.md"
         if not doc_path.exists():
             return []
-        return [doc_path.read_text()]
+        return [doc_path.read_text(encoding="utf-8")]
 
     def load_trace_inputs(self, project_root: str) -> list[str]:
         data_dir = Path(project_root) / "data"
         trace_path = data_dir / "traces" / "ftp_sessions.txt"
         if not trace_path.exists():
             return []
-        text = trace_path.read_text()
+        text = trace_path.read_text(encoding="utf-8")
         return [session.strip() for session in text.split("---") if session.strip()]
 
     def load_seed_inputs(self, project_root: str) -> list[str]:
@@ -267,8 +267,8 @@ Analyze these traces and record all protocol states and transitions you can iden
                 "description": f"{quit_trans.from_state} -> {quit_trans.to_state} via QUIT",
             })
 
-        if len(fixed_targets) >= 3:
-            return fixed_targets[:3]
+        if len(fixed_targets) >= 12:
+            return fixed_targets[:12]
 
         # ---------------------------------------------------------------
         # Fallback to existing selection logic if fixed targets < 3
@@ -297,7 +297,7 @@ Analyze these traces and record all protocol states and transitions you can iden
                         "claim": transition,
                         "description": f"{transition.from_state} -> {transition.to_state} via {transition.message_type}",
                     })
-                    if len(probe_targets) >= 3:
+                    if len(probe_targets) >= 12:
                         break
 
         if not probe_targets:
@@ -316,7 +316,7 @@ Analyze these traces and record all protocol states and transitions you can iden
                         "claim": transition,
                         "description": f"{transition.from_state} -> {transition.to_state} via {transition.message_type}",
                     })
-                if len(probe_targets) >= 3:
+                if len(probe_targets) >= 12:
                     break
 
         if not probe_targets:
@@ -328,9 +328,9 @@ Analyze these traces and record all protocol states and transitions you can iden
                         "claim": invariant,
                         "description": invariant.rule_text,
                     })
-                if len(probe_targets) >= 3:
+                if len(probe_targets) >= 12:
                     break
-        return probe_targets[:3]
+        return probe_targets[:12]
 
     def generate_probe_commands(self, target: dict) -> list[str]:
         claim = target["claim"]

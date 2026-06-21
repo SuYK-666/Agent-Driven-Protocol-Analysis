@@ -1,0 +1,1778 @@
+{
+  "project_id": 83,
+  "label": "e4_Qwen-Flash_r3",
+  "protocol": "RTSP",
+  "provider": "Qwen",
+  "model": "qwen3.6-flash-2026-04-16",
+  "created_at": "2026-06-06T10:48:37.049674",
+  "counts": {
+    "messages": 8,
+    "states": 7,
+    "transitions": 10,
+    "invariants": 24,
+    "evidence": 102,
+    "probes": 12,
+    "traces": 7
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "observed_message_coverage": 1.0,
+    "message_only_replay": 0.8571,
+    "msg_resp_replay": 0.9474,
+    "full_state_replay": 0.812,
+    "strict_replay": 0.812,
+    "relaxed_replay": 0.9474,
+    "session_replay": 0.812,
+    "evidence_locatability": 0.9314,
+    "contradiction_rate": 0.0,
+    "probe_expected_pass": 1.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 52.348
+  },
+  "message_types": [
+    "DESCRIBE",
+    "GET_PARAMETER",
+    "OPTIONS",
+    "PAUSE",
+    "PLAY",
+    "SETUP",
+    "SET_PARAMETER",
+    "TEARDOWN"
+  ],
+  "states": [
+    "INIT",
+    "DESCRIBED",
+    "READY",
+    "PLAYING",
+    "PAUSED",
+    "CLOSED",
+    "RECORDING"
+  ],
+  "transitions": [
+    {
+      "from": "READY",
+      "to": "PLAYING",
+      "via": "PLAY",
+      "status": "hypothesis",
+      "confidence": 0.9
+    },
+    {
+      "from": "PAUSED",
+      "to": "PLAYING",
+      "via": "PLAY",
+      "status": "hypothesis",
+      "confidence": 0.85
+    },
+    {
+      "from": "INIT",
+      "to": "INIT",
+      "via": "OPTIONS",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "INIT",
+      "to": "DESCRIBED",
+      "via": "DESCRIBE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "DESCRIBED",
+      "to": "READY",
+      "via": "SETUP",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "INIT",
+      "to": "READY",
+      "via": "SETUP",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "PLAYING",
+      "to": "PAUSED",
+      "via": "PAUSE",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "PLAYING",
+      "to": "CLOSED",
+      "via": "TEARDOWN",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "READY",
+      "to": "CLOSED",
+      "via": "TEARDOWN",
+      "status": "hypothesis",
+      "confidence": 0.8
+    },
+    {
+      "from": "RECORDING",
+      "to": "CLOSED",
+      "via": "TEARDOWN",
+      "status": "hypothesis",
+      "confidence": 0.8
+    }
+  ],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "OPTIONS",
+        "DESCRIBE",
+        "SETUP",
+        "PLAY",
+        "PAUSE",
+        "TEARDOWN",
+        "GET_PARAMETER",
+        "SET_PARAMETER"
+      ],
+      "invariants_created": [
+        "CSeq header must be present in every request and response, and must be monotonically increasing within a transaction.",
+        "SETUP must precede PLAY, PAUSE, and RECORD operations.",
+        "Session header is required in all requests following the first SETUP that assigns the session ID.",
+        "DESCRIBE typically precedes SETUP but is not strictly required; however, SDP is needed for proper client configuration.",
+        "OPTIONS can be sent at any time during the session lifecycle.",
+        "TEARDOWN terminates the session; subsequent requests using the same Session ID will fail with 454 Session Not Found.",
+        "Transport header is mandatory in SETUP requests to specify RTP/UDP, RTP/TCP, or other transport mechanisms.",
+        "PAUSE is only valid when the session is in PLAYING state; sending PAUSE in READY state results in 455 Method Not Valid in This State.",
+        "PLAY transitions session from READY to PLAYING; REPEAT PLAY while PLAYING may restart or continue depending on implementation.",
+        "OPTIONS.CSeq: Mandatory integer, monotonically increasing",
+        "DESCRIBE.CSeq: Mandatory integer, monotonically increasing",
+        "SETUP.CSeq: Mandatory integer, monotonically increasing",
+        "SETUP.Session: Mandatory string; must match existing session ID or be empty for first setup",
+        "SETUP.Transport: Mandatory string; specifies transport protocol and client ports",
+        "PLAY.CSeq: Mandatory integer, monotonically increasing",
+        "PLAY.Session: Mandatory string; must be valid active session ID",
+        "PAUSE.CSeq: Mandatory integer, monotonically increasing",
+        "PAUSE.Session: Mandatory string; must be valid active session ID",
+        "TEARDOWN.CSeq: Mandatory integer, monotonically increasing",
+        "TEARDOWN.Session: Mandatory string; must be valid active session ID",
+        "GET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+        "GET_PARAMETER.Session: Mandatory string; must be valid active session ID",
+        "SET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+        "SET_PARAMETER.Session: Mandatory string; must be valid active session ID"
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 6
+    },
+    "trace": {
+      "agent": "trace",
+      "events_parsed": 38,
+      "sessions_processed": 6,
+      "llm_tool_calls": 1,
+      "observation_tool_used": true,
+      "observation_summary": {
+        "message_types": 1,
+        "states": 6,
+        "sequence_patterns": 4
+      },
+      "fallback_used": false,
+      "message_types_updated": [],
+      "states_created": [
+        "INIT",
+        "DESCRIBED",
+        "READY",
+        "PLAYING",
+        "PAUSED",
+        "CLOSED",
+        "RECORDING"
+      ],
+      "transitions_created": [
+        "READY → PLAYING via PLAY",
+        "PAUSED → PLAYING via PLAY",
+        "INIT → INIT via OPTIONS",
+        "INIT → DESCRIBED via DESCRIBE",
+        "DESCRIBED → READY via SETUP",
+        "INIT → READY via SETUP",
+        "PLAYING → PAUSED via PAUSE",
+        "PLAYING → CLOSED via TEARDOWN",
+        "READY → CLOSED via TEARDOWN",
+        "RECORDING → CLOSED via TEARDOWN"
+      ]
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 10,
+      "invariants_verified": 24,
+      "status_changes": [
+        {
+          "type": "transition",
+          "description": "READY -> PLAYING via PLAY",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.9,
+          "evidence_count": 1,
+          "rationale": "Directly evidenced by LLM Trace Agent analysis showing PLAY initiates media streaming after resources are ready in all sessions with 200 OK responses."
+        },
+        {
+          "type": "transition",
+          "description": "PAUSED -> PLAYING via PLAY",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.85,
+          "evidence_count": 1,
+          "rationale": "Evidenced by trace data showing PLAY resumes streaming from paused state in Sessions 2 and 5 with 200 OK responses."
+        },
+        {
+          "type": "transition",
+          "description": "INIT -> INIT via OPTIONS",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; no direct trace evidence confirming this specific transition behavior."
+        },
+        {
+          "type": "transition",
+          "description": "INIT -> DESCRIBED via DESCRIBE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; lacks direct trace confirmation of this state transition."
+        },
+        {
+          "type": "transition",
+          "description": "DESCRIBED -> READY via SETUP",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; no direct trace evidence validating this transition path."
+        },
+        {
+          "type": "transition",
+          "description": "INIT -> READY via SETUP",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; speculative without direct trace confirmation."
+        },
+        {
+          "type": "transition",
+          "description": "PLAYING -> PAUSED via PAUSE",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; no direct trace evidence observed for this transition."
+        },
+        {
+          "type": "transition",
+          "description": "PLAYING -> CLOSED via TEARDOWN",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; lacks direct trace validation."
+        },
+        {
+          "type": "transition",
+          "description": "READY -> CLOSED via TEARDOWN",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; no direct trace evidence supporting this transition."
+        },
+        {
+          "type": "transition",
+          "description": "RECORDING -> CLOSED via TEARDOWN",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Only heuristic trace augmentation provided; speculative without direct trace confirmation."
+        },
+        {
+          "type": "invariant",
+          "description": "CSeq header must be present in every request and response, and must be monotonically increasing within a transaction.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented as mandatory and monotonically increasing per method in LLM Spec Agent analysis, consistent with RTSP specification requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "SETUP must precede PLAY, PAUSE, and RECORD operations.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Explicitly documented by LLM Spec Agent that SETUP must precede these operations, aligning with RTSP protocol semantics."
+        },
+        {
+          "type": "invariant",
+          "description": "Session header is required in all requests following the first SETUP that assigns the session ID.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented requirement from LLM Spec Agent analysis, consistent with RTSP session management rules."
+        },
+        {
+          "type": "invariant",
+          "description": "DESCRIBE typically precedes SETUP but is not strictly required; however, SDP is needed for proper client configuration.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.75,
+          "evidence_count": 1,
+          "rationale": "Documented nuance from LLM Spec Agent indicating DESCRIBE is typical but not mandatory, which reflects actual RTSP flexibility."
+        },
+        {
+          "type": "invariant",
+          "description": "OPTIONS can be sent at any time during the session lifecycle.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented by LLM Spec Agent that OPTIONS can be sent at any time, consistent with RTSP specification allowing OPTIONS in any state."
+        },
+        {
+          "type": "invariant",
+          "description": "TEARDOWN terminates the session; subsequent requests using the same Session ID will fail with 454 Session Not Found.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented behavior from LLM Spec Agent showing TEARDOWN invalidates the session, leading to 454 errors on subsequent use."
+        },
+        {
+          "type": "invariant",
+          "description": "Transport header is mandatory in SETUP requests to specify RTP/UDP, RTP/TCP, or other transport mechanisms.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented as required in SETUP requests by LLM Spec Agent, consistent with RTSP specification requiring Transport header."
+        },
+        {
+          "type": "invariant",
+          "description": "PAUSE is only valid when the session is in PLAYING state; sending PAUSE in READY state results in 455 Method Not Valid in This State.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Documented state constraint from LLM Spec Agent showing PLAYING → [PAUSE] → READY transition, with error handling for invalid states."
+        },
+        {
+          "type": "invariant",
+          "description": "PLAY transitions session from READY to PLAYING; REPEAT PLAY while PLAYING may restart or continue depending on implementation.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.75,
+          "evidence_count": 1,
+          "rationale": "Documented transition behavior from LLM Spec Agent, acknowledging implementation-dependent behavior for repeated PLAY commands."
+        },
+        {
+          "type": "invariant",
+          "description": "OPTIONS.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for OPTIONS, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "DESCRIBE.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for DESCRIBE, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "SETUP.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for SETUP, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "SETUP.Session: Mandatory string; must match existing session ID or be empty for first setup",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header requirements for SETUP, consistent with RTSP session management."
+        },
+        {
+          "type": "invariant",
+          "description": "SETUP.Transport: Mandatory string; specifies transport protocol and client ports",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Transport header is mandatory in SETUP, consistent with RTSP specification."
+        },
+        {
+          "type": "invariant",
+          "description": "PLAY.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for PLAY, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "PLAY.Session: Mandatory string; must be valid active session ID",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header must reference valid active session for PLAY, consistent with RTSP protocol."
+        },
+        {
+          "type": "invariant",
+          "description": "PAUSE.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for PAUSE, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "PAUSE.Session: Mandatory string; must be valid active session ID",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header must reference valid active session for PAUSE, consistent with RTSP protocol."
+        },
+        {
+          "type": "invariant",
+          "description": "TEARDOWN.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for TEARDOWN, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "TEARDOWN.Session: Mandatory string; must be valid active session ID",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header must reference valid active session for TEARDOWN, consistent with RTSP protocol."
+        },
+        {
+          "type": "invariant",
+          "description": "GET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for GET_PARAMETER, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "GET_PARAMETER.Session: Mandatory string; must be valid active session ID",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header must reference valid active session for GET_PARAMETER, consistent with RTSP protocol."
+        },
+        {
+          "type": "invariant",
+          "description": "SET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms CSeq is mandatory and monotonically increasing for SET_PARAMETER, consistent with general RTSP CSeq requirements."
+        },
+        {
+          "type": "invariant",
+          "description": "SET_PARAMETER.Session: Mandatory string; must be valid active session ID",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.8,
+          "evidence_count": 1,
+          "rationale": "Field-level analysis confirms Session header must reference valid active session for SET_PARAMETER, consistent with RTSP protocol."
+        }
+      ]
+    },
+    "probe": {
+      "agent": "probe",
+      "probes_executed": 12,
+      "model_updates": [
+        {
+          "target": "READY -> PLAYING via PLAY",
+          "action": "no_change"
+        },
+        {
+          "target": "PAUSED -> PLAYING via PLAY",
+          "action": "no_change"
+        },
+        {
+          "target": "INIT -> INIT via OPTIONS",
+          "action": "no_change"
+        },
+        {
+          "target": "INIT -> DESCRIBED via DESCRIBE",
+          "action": "no_change"
+        },
+        {
+          "target": "DESCRIBED -> READY via SETUP",
+          "action": "no_change"
+        },
+        {
+          "target": "INIT -> READY via SETUP",
+          "action": "no_change"
+        },
+        {
+          "target": "PLAYING -> PAUSED via PAUSE",
+          "action": "no_change"
+        },
+        {
+          "target": "PLAYING -> CLOSED via TEARDOWN",
+          "action": "no_change"
+        },
+        {
+          "target": "READY -> CLOSED via TEARDOWN",
+          "action": "no_change"
+        },
+        {
+          "target": "RECORDING -> CLOSED via TEARDOWN",
+          "action": "no_change"
+        },
+        {
+          "target": "READY -> PLAYING via PLAY [replicate 11]",
+          "action": "no_change"
+        },
+        {
+          "target": "PAUSED -> PLAYING via PLAY [replicate 12]",
+          "action": "no_change"
+        }
+      ],
+      "llm_tool_calls": 1,
+      "llm_plan_used": true
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 83,
+        "protocol": "RTSP",
+        "messages": {
+          "DESCRIBE": {
+            "template": "DESCRIBE rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nAccept: application/sdp\r\n[Session: <session_id>]\r\n\r\n",
+            "fields": {
+              "Accept": {
+                "type": "string",
+                "examples": [
+                  "string, typically 'application/sdp'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "integer, in response; length of SDP body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "string, in response; indicates body type (e.g., application/sdp)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, optional; not required before SETUP"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "2",
+                  "3"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, the URI of the presentation"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://media.local/stream",
+                  "rtsp://vod.local/movie",
+                  "rtsp://live.local/badstream",
+                  "rtsp://live.local/channel1",
+                  "rtsp://media.example.com/stream"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "INIT"
+            ],
+            "postconditions": [
+              "DESCRIBED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 8,
+            "confidence": 1.0
+          },
+          "GET_PARAMETER": {
+            "template": "GET_PARAMETER rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; current active session ID"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "6",
+                  "5"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, presentation or track URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "session": {
+                "type": "string",
+                "examples": [
+                  "SESS0003",
+                  "DEADBEEF"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://live.local/channel1",
+                  "rtsp://stream.test/live2"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 0.98
+          },
+          "OPTIONS": {
+            "template": "OPTIONS rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\n[Session: <session_id>]\r\n[Transport: <transport_params>]\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, optional in OPTIONS; present if session exists"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Transport": {
+                "type": "string",
+                "examples": [
+                  "string, optional; transport parameters"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "1"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, the URI of the resource being queried"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://media.local/stream",
+                  "rtsp://vod.local/movie",
+                  "rtsp://live.local/channel1",
+                  "rtsp://media.example.com/stream",
+                  "rtsp://media.example.com/"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "INIT"
+            ],
+            "postconditions": [
+              "INIT"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 6,
+            "confidence": 1.0
+          },
+          "PAUSE": {
+            "template": "PAUSE rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\nRange: <range_value>\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Range": {
+                "type": "string",
+                "examples": [
+                  "string, optional; point in time to pause at"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; current active session ID"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "5"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, presentation-level URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "session": {
+                "type": "string",
+                "examples": [
+                  "SESS0002",
+                  "ABCDEF01"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://vod.local/movie",
+                  "rtsp://media.example.com/movie"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "PLAYING"
+            ],
+            "postconditions": [
+              "PAUSED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "PLAY": {
+            "template": "PLAY rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\nRange: <range_value>\r\n[Scale: <scale_value>]\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Range": {
+                "type": "string",
+                "examples": [
+                  "string, optional; start/stop times for playback"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Scale": {
+                "type": "string",
+                "examples": [
+                  "string, optional; playback speed multiplier"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; current active session ID"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "4",
+                  "6",
+                  "5"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "range": {
+                "type": "string",
+                "examples": [
+                  "npt=0.000-",
+                  "npt=10.000-30.000",
+                  "npt=30.000-60.000"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, presentation-level URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "session": {
+                "type": "string",
+                "examples": [
+                  "SESS0001",
+                  "SESS0002",
+                  "SESS0003",
+                  "12345678",
+                  "ABCDEF01"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://media.local/stream",
+                  "rtsp://vod.local/movie",
+                  "rtsp://live.local/channel1",
+                  "rtsp://media.example.com/stream",
+                  "rtsp://media.example.com/movie"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "PAUSED",
+              "READY"
+            ],
+            "postconditions": [
+              "PLAYING"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 8,
+            "confidence": 0.95
+          },
+          "SETUP": {
+            "template": "SETUP rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\nTransport: <transport_params>\r\n[Range: <range_value>]\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Range": {
+                "type": "string",
+                "examples": [
+                  "string, optional; NPT or clock range"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; assigned by server after previous SETUP or initial session"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Transport": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; specifies RTP/UDP, RTP/TCP, etc., with client ports"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "3",
+                  "4"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, track-specific URI for stream setup"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "transport": {
+                "type": "string",
+                "examples": [
+                  "RTP/AVP;unicast;client_port=4588-4589",
+                  "RTP/AVP;unicast;client_port=5000-5001",
+                  "RTP/AVP;unicast;client_port=6000-6001"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://media.local/stream/track1",
+                  "rtsp://vod.local/movie/video",
+                  "rtsp://live.local/channel1/track0",
+                  "rtsp://media.example.com/stream/track1",
+                  "rtsp://media.example.com/movie/audio"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "DESCRIBED",
+              "INIT"
+            ],
+            "postconditions": [
+              "READY"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 6,
+            "confidence": 1.0
+          },
+          "SET_PARAMETER": {
+            "template": "SET_PARAMETER rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\nContent-Type: <content_type>\r\nContent-Length: <length>\r\n\r\n<body>\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "integer, length of body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "string, type of parameter data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; current active session ID"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, presentation or track URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.85
+          },
+          "TEARDOWN": {
+            "template": "TEARDOWN rtsp_uri RTSP/1.0\r\nCSeq: <sequence_number>\r\nSession: <session_id>\r\n\r\n",
+            "fields": {
+              "CSeq": {
+                "type": "string",
+                "examples": [
+                  "integer, monotonically increasing sequence number"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "RTSP_version": {
+                "type": "string",
+                "examples": [
+                  "string, must be 'RTSP/1.0'"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Session": {
+                "type": "string",
+                "examples": [
+                  "string, mandatory; current active session ID"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "cseq": {
+                "type": "integer",
+                "examples": [
+                  "5",
+                  "7"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              },
+              "rtsp_uri": {
+                "type": "string",
+                "examples": [
+                  "string, presentation or track URI"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "session": {
+                "type": "string",
+                "examples": [
+                  "SESS0001",
+                  "SESS0002",
+                  "SESS0003",
+                  "12345678",
+                  "ABCDEF01"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "uri": {
+                "type": "string",
+                "examples": [
+                  "rtsp://media.local/stream",
+                  "rtsp://vod.local/movie",
+                  "rtsp://live.local/channel1",
+                  "rtsp://media.example.com/stream",
+                  "rtsp://media.example.com/movie"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [
+              "PLAYING",
+              "READY",
+              "RECORDING"
+            ],
+            "postconditions": [
+              "CLOSED"
+            ],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 6,
+            "confidence": 1.0
+          }
+        },
+        "states": [
+          {
+            "name": "CLOSED",
+            "description": "",
+            "confidence": 0.98
+          },
+          {
+            "name": "DESCRIBED",
+            "description": "",
+            "confidence": 0.9
+          },
+          {
+            "name": "INIT",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "PAUSED",
+            "description": "",
+            "confidence": 0.9
+          },
+          {
+            "name": "PLAYING",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "READY",
+            "description": "",
+            "confidence": 0.95
+          },
+          {
+            "name": "RECORDING",
+            "description": "RECORD active",
+            "confidence": 0.78
+          }
+        ],
+        "transitions": [
+          {
+            "from_state": "READY",
+            "to_state": "PLAYING",
+            "message_type": "PLAY",
+            "status": "hypothesis",
+            "confidence": 0.9
+          },
+          {
+            "from_state": "PAUSED",
+            "to_state": "PLAYING",
+            "message_type": "PLAY",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "from_state": "INIT",
+            "to_state": "INIT",
+            "message_type": "OPTIONS",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "INIT",
+            "to_state": "DESCRIBED",
+            "message_type": "DESCRIBE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "DESCRIBED",
+            "to_state": "READY",
+            "message_type": "SETUP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "INIT",
+            "to_state": "READY",
+            "message_type": "SETUP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "PLAYING",
+            "to_state": "PAUSED",
+            "message_type": "PAUSE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "PLAYING",
+            "to_state": "CLOSED",
+            "message_type": "TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "READY",
+            "to_state": "CLOSED",
+            "message_type": "TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "from_state": "RECORDING",
+            "to_state": "CLOSED",
+            "message_type": "TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          }
+        ],
+        "ordering_rules": [
+          "SETUP must precede PLAY, PAUSE, and RECORD operations.",
+          "DESCRIBE typically precedes SETUP but is not strictly required; however, SDP is needed for proper client configuration.",
+          "OPTIONS can be sent at any time during the session lifecycle.",
+          "TEARDOWN terminates the session; subsequent requests using the same Session ID will fail with 454 Session Not Found.",
+          "PAUSE is only valid when the session is in PLAYING state; sending PAUSE in READY state results in 455 Method Not Valid in This State.",
+          "PLAY transitions session from READY to PLAYING; REPEAT PLAY while PLAYING may restart or continue depending on implementation."
+        ],
+        "field_constraints": [
+          "CSeq header must be present in every request and response, and must be monotonically increasing within a transaction.",
+          "Session header is required in all requests following the first SETUP that assigns the session ID.",
+          "Transport header is mandatory in SETUP requests to specify RTP/UDP, RTP/TCP, or other transport mechanisms.",
+          "OPTIONS.CSeq: Mandatory integer, monotonically increasing",
+          "DESCRIBE.CSeq: Mandatory integer, monotonically increasing",
+          "SETUP.CSeq: Mandatory integer, monotonically increasing",
+          "SETUP.Session: Mandatory string; must match existing session ID or be empty for first setup",
+          "SETUP.Transport: Mandatory string; specifies transport protocol and client ports",
+          "PLAY.CSeq: Mandatory integer, monotonically increasing",
+          "PLAY.Session: Mandatory string; must be valid active session ID",
+          "PAUSE.CSeq: Mandatory integer, monotonically increasing",
+          "PAUSE.Session: Mandatory string; must be valid active session ID",
+          "TEARDOWN.CSeq: Mandatory integer, monotonically increasing",
+          "TEARDOWN.Session: Mandatory string; must be valid active session ID",
+          "GET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+          "GET_PARAMETER.Session: Mandatory string; must be valid active session ID",
+          "SET_PARAMETER.CSeq: Mandatory integer, monotonically increasing",
+          "SET_PARAMETER.Session: Mandatory string; must be valid active session ID"
+        ],
+        "dangerous_input_families": [
+          "oversized token",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 83,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 83,
+        "unused_message_types": [
+          "GET_PARAMETER",
+          "SET_PARAMETER"
+        ],
+        "isolated_states": [
+          {
+            "state": "RECORDING",
+            "incoming": 0,
+            "outgoing": 1
+          }
+        ],
+        "weak_transitions": [
+          {
+            "description": "INIT -> INIT via OPTIONS",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "INIT -> DESCRIBED via DESCRIBE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "DESCRIBED -> READY via SETUP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "INIT -> READY via SETUP",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "PLAYING -> PAUSED via PAUSE",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "PLAYING -> CLOSED via TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "READY -> CLOSED via TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "RECORDING -> CLOSED via TEARDOWN",
+            "status": "hypothesis",
+            "confidence": 0.8
+          },
+          {
+            "description": "PAUSED -> PLAYING via PLAY",
+            "status": "hypothesis",
+            "confidence": 0.85
+          },
+          {
+            "description": "READY -> PLAYING via PLAY",
+            "status": "hypothesis",
+            "confidence": 0.9
+          }
+        ],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 1.2,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: GET_PARAMETER, SET_PARAMETER",
+          "Some inferred states are weakly connected in the current model; add directed seeds for: RECORDING"
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [
+            "OPTIONS",
+            "DESCRIBE",
+            "SETUP",
+            "PAUSE",
+            "TEARDOWN",
+            "PLAY"
+          ],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: GET_PARAMETER, SET_PARAMETER"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 40,
+      "repaired": 41
+    },
+    "llm_usage": {
+      "calls": 4,
+      "prompt_tokens": 7338,
+      "completion_tokens": 7110,
+      "total_tokens": 14448,
+      "reasoning_tokens": 0
+    }
+  },
+  "llm_usage": {
+    "calls": 4,
+    "prompt_tokens": 7338,
+    "completion_tokens": 7110,
+    "total_tokens": 14448,
+    "reasoning_tokens": 0
+  }
+}

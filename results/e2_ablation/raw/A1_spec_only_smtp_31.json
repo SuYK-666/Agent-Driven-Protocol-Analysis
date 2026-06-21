@@ -1,0 +1,638 @@
+{
+  "project_id": 31,
+  "label": "A1_spec_only",
+  "protocol": "SMTP",
+  "provider": "Qwen",
+  "model": "qwen3.7-plus",
+  "created_at": "2026-06-06T10:17:20.112521",
+  "counts": {
+    "messages": 12,
+    "states": 0,
+    "transitions": 0,
+    "invariants": 14,
+    "evidence": 52,
+    "probes": 0,
+    "traces": 11
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "observed_message_coverage": 1.0,
+    "message_only_replay": 0.0,
+    "msg_resp_replay": 0.0,
+    "full_state_replay": 0.0,
+    "strict_replay": 0.0,
+    "relaxed_replay": 0.0,
+    "session_replay": 0.0,
+    "evidence_locatability": 1.0,
+    "contradiction_rate": 0.0,
+    "probe_expected_pass": 0.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 58.554
+  },
+  "message_types": [
+    "AUTH",
+    "DATA",
+    "EHLO",
+    "EXPN",
+    "HELO",
+    "MAIL",
+    "NOOP",
+    "QUIT",
+    "RCPT",
+    "RSET",
+    "STARTTLS",
+    "VRFY"
+  ],
+  "states": [],
+  "transitions": [],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "EHLO",
+        "HELO",
+        "MAIL",
+        "RCPT",
+        "DATA",
+        "AUTH",
+        "STARTTLS",
+        "RSET",
+        "QUIT",
+        "NOOP",
+        "VRFY",
+        "EXPN"
+      ],
+      "invariants_created": [
+        "EHLO or HELO MUST precede MAIL FROM",
+        "MAIL FROM MUST precede RCPT TO",
+        "RCPT TO MUST precede DATA",
+        "At least one RCPT TO is required before DATA",
+        "AUTH must follow EHLO (not HELO)",
+        "STARTTLS must follow EHLO and precede AUTH or MAIL",
+        "RSET returns to post-greeting state without closing connection",
+        "Multiple RCPT TO commands can be issued sequentially before DATA",
+        "EHLO.domain: Must be a valid hostname or domain identifier identifying the client",
+        "HELO.domain: Must be a valid hostname identifying the client",
+        "MAIL.reverse_path: Must be enclosed in angle brackets; specifies the sender address",
+        "RCPT.forward_path: Must be enclosed in angle brackets; specifies a recipient address",
+        "AUTH.mechanism: Must be one of supported mechanisms: PLAIN, LOGIN, or CRAM-MD5",
+        "DATA.message_content: Message body must end with a line containing only a period (.)"
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 10
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 0,
+      "invariants_verified": 14,
+      "status_changes": [
+        {
+          "type": "invariant",
+          "description": "EHLO or HELO MUST precede MAIL FROM",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "MAIL FROM MUST precede RCPT TO",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "RCPT TO MUST precede DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "At least one RCPT TO is required before DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "AUTH must follow EHLO (not HELO)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "STARTTLS must follow EHLO and precede AUTH or MAIL",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "RSET returns to post-greeting state without closing connection",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated specification document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "Multiple RCPT TO commands can be issued sequentially before DATA",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence references a session example but relies primarily on LLM-generated state machine description; insufficient direct protocol trace evidence for full support."
+        },
+        {
+          "type": "invariant",
+          "description": "EHLO.domain: Must be a valid hostname or domain identifier identifying the client",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "HELO.domain: Must be a valid hostname identifying the client",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "MAIL.reverse_path: Must be enclosed in angle brackets; specifies the sender address",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "RCPT.forward_path: Must be enclosed in angle brackets; specifies a recipient address",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "AUTH.mechanism: Must be one of supported mechanisms: PLAIN, LOGIN, or CRAM-MD5",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "DATA.message_content: Message body must end with a line containing only a period (.)",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is solely from an LLM-generated field analysis document, not direct trace or probe behavior."
+        }
+      ]
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 31,
+        "protocol": "SMTP",
+        "messages": {
+          "AUTH": {
+            "template": "AUTH <mechanism> [initial-response]",
+            "fields": {
+              "initial_response": {
+                "type": "string",
+                "examples": [
+                  "Optional base64-encoded credentials"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "mechanism": {
+                "type": "string",
+                "examples": [
+                  "LOGIN"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "DATA": {
+            "template": "DATA",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 10,
+            "confidence": 1.0
+          },
+          "EHLO": {
+            "template": "EHLO <domain>",
+            "fields": {
+              "domain": {
+                "type": "string",
+                "examples": [
+                  "CLIENT.EXAMPLE.COM",
+                  "RELAY.NET",
+                  "FUZZER.LOCAL",
+                  "PROBE.TEST",
+                  "MAIL.EXAMPLE.COM"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 8,
+            "confidence": 1.0
+          },
+          "EXPN": {
+            "template": "EXPN <mailing-list>",
+            "fields": {
+              "mailing_list": {
+                "type": "string",
+                "examples": [
+                  "Mailing list name to expand"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 0.9
+          },
+          "HELO": {
+            "template": "HELO <domain>",
+            "fields": {
+              "domain": {
+                "type": "string",
+                "examples": [
+                  "OLD.CLIENT",
+                  "LEGACY.CLIENT"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "MAIL": {
+            "template": "MAIL FROM:<reverse-path>",
+            "fields": {
+              "from": {
+                "type": "string",
+                "examples": [
+                  "alice@example.com",
+                  "sender@relay.net",
+                  "fuzzer@local",
+                  "retry@local",
+                  "postmaster@old.client"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "reverse_path": {
+                "type": "string",
+                "examples": [
+                  "Sender email address in angle brackets"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "size": {
+                "type": "integer",
+                "examples": [
+                  "1024"
+                ],
+                "boundary_cases": [
+                  "0",
+                  "1",
+                  "65535",
+                  "70000"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 12,
+            "confidence": 1.0
+          },
+          "NOOP": {
+            "template": "NOOP",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          },
+          "QUIT": {
+            "template": "QUIT",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 10,
+            "confidence": 1.0
+          },
+          "RCPT": {
+            "template": "RCPT TO:<forward-path>",
+            "fields": {
+              "forward_path": {
+                "type": "string",
+                "examples": [
+                  "Recipient email address in angle brackets"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "to": {
+                "type": "string",
+                "examples": [
+                  "bob@example.com",
+                  "user1@dest.com",
+                  "user2@dest.com",
+                  "unknown@dest.com",
+                  "target@local"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 16,
+            "confidence": 1.0
+          },
+          "RSET": {
+            "template": "RSET",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 3,
+            "confidence": 1.0
+          },
+          "STARTTLS": {
+            "template": "STARTTLS",
+            "fields": {},
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          },
+          "VRFY": {
+            "template": "VRFY <address>",
+            "fields": {
+              "address": {
+                "type": "string",
+                "examples": [
+                  "Email address or user name to verify"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "args": {
+                "type": "string",
+                "examples": [
+                  "ADMIN@SERVER",
+                  "USER@EXAMPLE.COM"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 2,
+            "confidence": 1.0
+          }
+        },
+        "states": [],
+        "transitions": [],
+        "ordering_rules": [
+          "EHLO or HELO MUST precede MAIL FROM",
+          "MAIL FROM MUST precede RCPT TO",
+          "RCPT TO MUST precede DATA",
+          "AUTH must follow EHLO (not HELO)",
+          "STARTTLS must follow EHLO and precede AUTH or MAIL",
+          "RSET returns to post-greeting state without closing connection",
+          "Multiple RCPT TO commands can be issued sequentially before DATA"
+        ],
+        "field_constraints": [
+          "At least one RCPT TO is required before DATA",
+          "EHLO.domain: Must be a valid hostname or domain identifier identifying the client",
+          "HELO.domain: Must be a valid hostname identifying the client",
+          "MAIL.reverse_path: Must be enclosed in angle brackets; specifies the sender address",
+          "RCPT.forward_path: Must be enclosed in angle brackets; specifies a recipient address",
+          "AUTH.mechanism: Must be one of supported mechanisms: PLAIN, LOGIN, or CRAM-MD5",
+          "DATA.message_content: Message body must end with a line containing only a period (.)"
+        ],
+        "dangerous_input_families": [
+          "oversized token",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 31,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 31,
+        "unused_message_types": [
+          "AUTH",
+          "DATA",
+          "EHLO",
+          "EXPN",
+          "HELO",
+          "MAIL",
+          "NOOP",
+          "QUIT",
+          "RCPT",
+          "RSET",
+          "STARTTLS",
+          "VRFY"
+        ],
+        "isolated_states": [],
+        "weak_transitions": [],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 0.0,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: AUTH, DATA, EHLO, EXPN, HELO, MAIL, NOOP, QUIT",
+          "No probes were executed; schedule online validation for authentication, directory traversal, and rename flows."
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: AUTH, DATA, EHLO, EXPN, HELO, MAIL, NOOP, QUIT"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 26,
+      "repaired": 26
+    },
+    "llm_usage": {
+      "calls": 2,
+      "prompt_tokens": 3899,
+      "completion_tokens": 2382,
+      "total_tokens": 6281,
+      "reasoning_tokens": 0
+    }
+  },
+  "llm_usage": {
+    "calls": 2,
+    "prompt_tokens": 3899,
+    "completion_tokens": 2382,
+    "total_tokens": 6281,
+    "reasoning_tokens": 0
+  }
+}

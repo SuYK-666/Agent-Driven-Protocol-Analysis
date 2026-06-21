@@ -1,0 +1,54 @@
+[
+  {
+    "protocol": "FTP",
+    "hyp_before": 60,
+    "supp_before": 0,
+    "disp_before": 0,
+    "hyp_to_supp": 0,
+    "hyp_to_disp": 3,
+    "supp_to_disp": 0,
+    "remain_hyp": 57,
+    "supp_after": 0,
+    "disp_after": 3,
+    "conversion_rate": 0.05
+  },
+  {
+    "protocol": "SMTP",
+    "hyp_before": 39,
+    "supp_before": 0,
+    "disp_before": 0,
+    "hyp_to_supp": 27,
+    "hyp_to_disp": 0,
+    "supp_to_disp": 0,
+    "remain_hyp": 12,
+    "supp_after": 27,
+    "disp_after": 0,
+    "conversion_rate": 0.6923
+  },
+  {
+    "protocol": "RTSP",
+    "hyp_before": 30,
+    "supp_before": 0,
+    "disp_before": 0,
+    "hyp_to_supp": 0,
+    "hyp_to_disp": 0,
+    "supp_to_disp": 0,
+    "remain_hyp": 30,
+    "supp_after": 0,
+    "disp_after": 0,
+    "conversion_rate": 0.0
+  },
+  {
+    "protocol": "HTTP",
+    "hyp_before": 36,
+    "supp_before": 0,
+    "disp_before": 0,
+    "hyp_to_supp": 0,
+    "hyp_to_disp": 0,
+    "supp_to_disp": 0,
+    "remain_hyp": 36,
+    "supp_after": 0,
+    "disp_after": 0,
+    "conversion_rate": 0.0
+  }
+]

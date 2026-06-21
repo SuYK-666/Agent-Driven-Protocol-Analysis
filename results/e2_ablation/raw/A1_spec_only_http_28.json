@@ -1,0 +1,426 @@
+{
+  "project_id": 28,
+  "label": "A1_spec_only",
+  "protocol": "HTTP",
+  "provider": "Qwen",
+  "model": "qwen3.7-plus",
+  "created_at": "2026-06-06T10:17:07.964736",
+  "counts": {
+    "messages": 2,
+    "states": 0,
+    "transitions": 0,
+    "invariants": 10,
+    "evidence": 22,
+    "probes": 0,
+    "traces": 7
+  },
+  "metrics": {
+    "schema_pass": 1.0,
+    "reference_integrity": 1.0,
+    "observed_message_coverage": 0.0,
+    "message_only_replay": 0.0,
+    "msg_resp_replay": 0.0,
+    "full_state_replay": 0.0,
+    "strict_replay": 0.0,
+    "relaxed_replay": 0.0,
+    "session_replay": 0.0,
+    "evidence_locatability": 1.0,
+    "contradiction_rate": 0.0,
+    "probe_expected_pass": 0.0,
+    "pipeline_success": 1.0,
+    "latency_seconds": 46.761
+  },
+  "message_types": [
+    "HTTP_REQUEST",
+    "HTTP_RESPONSE"
+  ],
+  "states": [],
+  "transitions": [],
+  "pipeline_results": {
+    "spec": {
+      "agent": "spec",
+      "llm_tool_calls": 1,
+      "fallback_used": false,
+      "message_types_created": [
+        "HTTP_REQUEST",
+        "HTTP_RESPONSE"
+      ],
+      "invariants_created": [
+        "Every HTTP/1.1 request must precede its corresponding response in the message stream.",
+        "If a 401 Unauthorized response is received, the subsequent request to the same resource should include an Authorization header.",
+        "If a 3xx redirect response (e.g., 301) is received with a Location header, the client should issue a new GET request to the specified URI.",
+        "A HEAD request must not be followed by a response body, although headers are returned.",
+        "Persistent connections allow multiple request-response pairs over a single TCP connection until Connection: close is sent.",
+        "HTTP_REQUEST.Host: Mandatory in all HTTP/1.1 requests to identify the target virtual host.",
+        "HTTP_REQUEST.Content-Length: Required if the request contains a body (e.g., POST, PUT, PATCH) and Transfer-Encoding is not used.",
+        "HTTP_REQUEST.Authorization: Required in requests following a 401 Unauthorized response to access protected resources.",
+        "HTTP_RESPONSE.Location: Must be present in 3xx redirect responses to indicate the new resource URI.",
+        "HTTP_RESPONSE.Body: Must be absent in HEAD responses and 204 No Content responses."
+      ],
+      "docs_processed": 1,
+      "traces_summarized": 6
+    },
+    "verifier": {
+      "agent": "verifier",
+      "transitions_verified": 0,
+      "invariants_verified": 10,
+      "status_changes": [
+        {
+          "type": "invariant",
+          "description": "Every HTTP/1.1 request must precede its corresponding response in the message stream.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a generic LLM spec description of a request-response model, not direct trace evidence showing ordering constraints."
+        },
+        {
+          "type": "invariant",
+          "description": "If a 401 Unauthorized response is received, the subsequent request to the same resource should include an Authorization header.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence cites a state machine diagram from an LLM spec agent, but lacks actual trace data confirming this behavior in practice."
+        },
+        {
+          "type": "invariant",
+          "description": "If a 3xx redirect response (e.g., 301) is received with a Location header, the client should issue a new GET request to the specified URI.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence references specific sessions (3 and 6) in an LLM spec context, but without raw trace logs, this remains indirect documentation rather than verified protocol behavior."
+        },
+        {
+          "type": "invariant",
+          "description": "A HEAD request must not be followed by a response body, although headers are returned.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a statement from an LLM spec agent about what 'must' happen, not empirical verification from packet captures or logs."
+        },
+        {
+          "type": "invariant",
+          "description": "Persistent connections allow multiple request-response pairs over a single TCP connection until Connection: close is sent.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a state transition description from an LLM spec agent, lacking concrete trace evidence of keep-alive behavior across multiple exchanges."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP_REQUEST.Host: Mandatory in all HTTP/1.1 requests to identify the target virtual host.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a field analysis note from an LLM spec agent stating the rule, not verification against actual request streams."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP_REQUEST.Content-Length: Required if the request contains a body (e.g., POST, PUT, PATCH) and Transfer-Encoding is not used.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a field analysis note from an LLM spec agent stating the rule, not verification against actual request streams."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP_REQUEST.Authorization: Required in requests following a 401 Unauthorized response to access protected resources.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a field analysis note from an LLM spec agent stating the requirement, not empirical proof from observed traffic."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP_RESPONSE.Location: Must be present in 3xx redirect responses to indicate the new resource URI.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a field analysis note from an LLM spec agent stating the requirement, not empirical proof from observed traffic."
+        },
+        {
+          "type": "invariant",
+          "description": "HTTP_RESPONSE.Body: Must be absent in HEAD responses and 204 No Content responses.",
+          "old_status": "hypothesis",
+          "new_status": "hypothesis",
+          "confidence": 0.7,
+          "evidence_count": 1,
+          "rationale": "Evidence is a field analysis note from an LLM spec agent stating the constraint, not empirical proof from observed traffic."
+        }
+      ]
+    },
+    "artifacts": {
+      "protocol_schema": {
+        "schema_version": 1,
+        "project_id": 28,
+        "protocol": "HTTP",
+        "messages": {
+          "HTTP_REQUEST": {
+            "template": "METHOD /path HTTP/1.1\\r\\nHost: <host>\\r\\n[Headers]\\r\\n\\r\\n[Body]",
+            "fields": {
+              "Authorization": {
+                "type": "string",
+                "examples": [
+                  "Credentials for protected resources"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Connection": {
+                "type": "string",
+                "examples": [
+                  "keep-alive or close"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "Byte length of body if present"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Host": {
+                "type": "host",
+                "examples": [
+                  "Required target virtual host"
+                ],
+                "boundary_cases": [
+                  "127.0.0.1",
+                  "0.0.0.0",
+                  "256.256.256.256"
+                ]
+              },
+              "Method": {
+                "type": "string",
+                "examples": [
+                  "GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH|CONNECT|TRACE"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Path": {
+                "type": "path",
+                "examples": [
+                  "URI path or * for OPTIONS"
+                ],
+                "boundary_cases": [
+                  "/",
+                  "../",
+                  "/tmp/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "./nested/dir"
+                ]
+              },
+              "Transfer-Encoding": {
+                "type": "string",
+                "examples": [
+                  "chunked (alternative to Content-Length)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          },
+          "HTTP_RESPONSE": {
+            "template": "HTTP/1.1 <status-code> <reason-phrase>\\r\\n[Headers]\\r\\n\\r\\n[Body]",
+            "fields": {
+              "Content-Length": {
+                "type": "string",
+                "examples": [
+                  "Byte length of response body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Content-Type": {
+                "type": "string",
+                "examples": [
+                  "MIME type of response body"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Location": {
+                "type": "string",
+                "examples": [
+                  "Redirect target URI for 3xx responses"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "ReasonPhrase": {
+                "type": "string",
+                "examples": [
+                  "Text description of status code"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "Set-Cookie": {
+                "type": "string",
+                "examples": [
+                  "Session management data"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              },
+              "StatusCode": {
+                "type": "string",
+                "examples": [
+                  "3-digit integer (2xx, 3xx, 4xx, 5xx)"
+                ],
+                "boundary_cases": [
+                  "",
+                  "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "%s%s%s",
+                  "../"
+                ]
+              }
+            },
+            "preconditions": [],
+            "postconditions": [],
+            "dangerous_inputs": [
+              "unexpected extra argument",
+              "repeated command",
+              "oversized token"
+            ],
+            "observed_count": 0,
+            "confidence": 1.0
+          }
+        },
+        "states": [],
+        "transitions": [],
+        "ordering_rules": [
+          "Every HTTP/1.1 request must precede its corresponding response in the message stream.",
+          "If a 401 Unauthorized response is received, the subsequent request to the same resource should include an Authorization header.",
+          "If a 3xx redirect response (e.g., 301) is received with a Location header, the client should issue a new GET request to the specified URI.",
+          "Persistent connections allow multiple request-response pairs over a single TCP connection until Connection: close is sent."
+        ],
+        "field_constraints": [
+          "A HEAD request must not be followed by a response body, although headers are returned.",
+          "HTTP_REQUEST.Host: Mandatory in all HTTP/1.1 requests to identify the target virtual host.",
+          "HTTP_REQUEST.Content-Length: Required if the request contains a body (e.g., POST, PUT, PATCH) and Transfer-Encoding is not used.",
+          "HTTP_REQUEST.Authorization: Required in requests following a 401 Unauthorized response to access protected resources.",
+          "HTTP_RESPONSE.Location: Must be present in 3xx redirect responses to indicate the new resource URI.",
+          "HTTP_RESPONSE.Body: Must be absent in HEAD responses and 204 No Content responses."
+        ],
+        "dangerous_input_families": [
+          "oversized token",
+          "repeated command",
+          "unexpected extra argument"
+        ]
+      },
+      "generated_seed_corpus": {
+        "project_id": 28,
+        "generated_seeds": [],
+        "categories": [],
+        "seed_count": 0
+      },
+      "feedback": {
+        "project_id": 28,
+        "unused_message_types": [
+          "HTTP_REQUEST",
+          "HTTP_RESPONSE"
+        ],
+        "isolated_states": [],
+        "weak_transitions": [],
+        "supported_ratio": 0.0,
+        "probe_to_transition_ratio": 0.0,
+        "generated_seed_count": 0,
+        "recommended_actions": [
+          "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: HTTP_REQUEST, HTTP_RESPONSE",
+          "No probes were executed; schedule online validation for authentication, directory traversal, and rename flows."
+        ],
+        "suggested_campaign": {
+          "target": "ftp-local",
+          "seed_strategy": "state_progression_then_file_ops",
+          "num_generated_seeds": 0,
+          "focus_commands": [],
+          "duration_minutes": 30,
+          "objective": "Increase post-auth and data-channel coverage while validating weaker transitions."
+        },
+        "fuzzing_observation": {
+          "likely_stall_point": "authentication_or_post_auth_gap",
+          "explanation": "Several observed message types are not yet represented in the state machine; prioritize seeds and probes for: HTTP_REQUEST, HTTP_RESPONSE"
+        }
+      }
+    },
+    "evidence_anchor": {
+      "created": 10,
+      "repaired": 10
+    },
+    "llm_usage": {
+      "calls": 2,
+      "prompt_tokens": 3334,
+      "completion_tokens": 1707,
+      "total_tokens": 5041,
+      "reasoning_tokens": 0
+    }
+  },
+  "llm_usage": {
+    "calls": 2,
+    "prompt_tokens": 3334,
+    "completion_tokens": 1707,
+    "total_tokens": 5041,
+    "reasoning_tokens": 0
+  }
+}

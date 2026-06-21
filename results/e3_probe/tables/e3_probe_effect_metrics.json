@@ -1,0 +1,50 @@
+[
+  {
+    "protocol": "FTP",
+    "expected_probes": 36,
+    "executed_probes": 36,
+    "probe_execution_coverage": 1.0,
+    "success_rate": 1.0,
+    "expected_pass_rate": 1.0,
+    "probe_evidence_loc": 0.9568,
+    "timeout": 0,
+    "unsafe_skipped": 0,
+    "parser_failed": 0
+  },
+  {
+    "protocol": "SMTP",
+    "expected_probes": 36,
+    "executed_probes": 36,
+    "probe_execution_coverage": 1.0,
+    "success_rate": 1.0,
+    "expected_pass_rate": 1.0,
+    "probe_evidence_loc": 0.9143,
+    "timeout": 0,
+    "unsafe_skipped": 0,
+    "parser_failed": 0
+  },
+  {
+    "protocol": "RTSP",
+    "expected_probes": 36,
+    "executed_probes": 36,
+    "probe_execution_coverage": 1.0,
+    "success_rate": 1.0,
+    "expected_pass_rate": 1.0,
+    "probe_evidence_loc": 0.9126,
+    "timeout": 0,
+    "unsafe_skipped": 0,
+    "parser_failed": 0
+  },
+  {
+    "protocol": "HTTP",
+    "expected_probes": 36,
+    "executed_probes": 36,
+    "probe_execution_coverage": 1.0,
+    "success_rate": 1.0,
+    "expected_pass_rate": 1.0,
+    "probe_evidence_loc": 0.9032,
+    "timeout": 0,
+    "unsafe_skipped": 0,
+    "parser_failed": 0
+  }
+]

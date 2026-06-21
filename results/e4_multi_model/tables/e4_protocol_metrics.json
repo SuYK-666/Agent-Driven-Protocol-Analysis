@@ -1,0 +1,57 @@
+[
+  {
+    "model": "DeepSeek-V4-Flash-NonThinking",
+    "ftp_replay": 0.4176,
+    "smtp_replay": 0.9104,
+    "rtsp_replay": 0.9474,
+    "http_replay": 1.0,
+    "ftp_evidence_loc": 0.9488,
+    "smtp_evidence_loc": 0.9191,
+    "rtsp_evidence_loc": 0.9406,
+    "http_evidence_loc": 0.8898
+  },
+  {
+    "model": "Qwen-Plus",
+    "ftp_replay": 0.4176,
+    "smtp_replay": 0.9701,
+    "rtsp_replay": 0.9474,
+    "http_replay": 0.9524,
+    "ftp_evidence_loc": 0.9562,
+    "smtp_evidence_loc": 0.921,
+    "rtsp_evidence_loc": 0.9118,
+    "http_evidence_loc": 0.9077
+  },
+  {
+    "model": "Qwen-Flash",
+    "ftp_replay": 0.4176,
+    "smtp_replay": 0.9801,
+    "rtsp_replay": 0.9474,
+    "http_replay": 0.9048,
+    "ftp_evidence_loc": 0.9412,
+    "smtp_evidence_loc": 0.9217,
+    "rtsp_evidence_loc": 0.9334,
+    "http_evidence_loc": 0.9379
+  },
+  {
+    "model": "GLM-51",
+    "ftp_replay": 0.4176,
+    "smtp_replay": 0.9104,
+    "rtsp_replay": 0.9474,
+    "http_replay": 1.0,
+    "ftp_evidence_loc": 0.9508,
+    "smtp_evidence_loc": 0.9254,
+    "rtsp_evidence_loc": 0.8928,
+    "http_evidence_loc": 0.9329
+  },
+  {
+    "model": "Kimi-K26-Fallback-Moonshot-V1-8K",
+    "ftp_replay": 0.6007,
+    "smtp_replay": 1.0,
+    "rtsp_replay": 0.9474,
+    "http_replay": 0.5714,
+    "ftp_evidence_loc": 0.9542,
+    "smtp_evidence_loc": 0.9085,
+    "rtsp_evidence_loc": 0.9167,
+    "http_evidence_loc": 0.9113
+  }
+]

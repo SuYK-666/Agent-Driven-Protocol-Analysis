@@ -1,0 +1,42 @@
+[
+  {
+    "configuration": "A0_single_prompt_json",
+    "schema_pass": 1.0,
+    "message_coverage": 0.75,
+    "msg_resp_replay": 0.0,
+    "full_state_replay": 0.0,
+    "contradiction_rate": 0.0
+  },
+  {
+    "configuration": "A1_spec_only",
+    "schema_pass": 1.0,
+    "message_coverage": 0.75,
+    "msg_resp_replay": 0.0,
+    "full_state_replay": 0.0,
+    "contradiction_rate": 0.0
+  },
+  {
+    "configuration": "A2_trace_only",
+    "schema_pass": 1.0,
+    "message_coverage": 1.0,
+    "msg_resp_replay": 0.8263,
+    "full_state_replay": 0.7169,
+    "contradiction_rate": 0.0208
+  },
+  {
+    "configuration": "A3_spec_trace_no_verifier",
+    "schema_pass": 1.0,
+    "message_coverage": 1.0,
+    "msg_resp_replay": 0.8055,
+    "full_state_replay": 0.6202,
+    "contradiction_rate": 0.0
+  },
+  {
+    "configuration": "A4_full_offline",
+    "schema_pass": 1.0,
+    "message_coverage": 1.0,
+    "msg_resp_replay": 0.8413,
+    "full_state_replay": 0.6381,
+    "contradiction_rate": 0.0
+  }
+]

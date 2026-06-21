@@ -1,0 +1,57 @@
+[
+  {
+    "model": "DeepSeek-V4-Flash-NonThinking",
+    "input_tokens": 99095,
+    "output_tokens": 123683,
+    "reasoning_tokens": 0,
+    "total_tokens": 222778,
+    "avg_latency_seconds": 94.5778,
+    "avg_cost_per_run": 18564.83,
+    "total_cost_units": 222778,
+    "cost_index": 1.6115
+  },
+  {
+    "model": "Qwen-Plus",
+    "input_tokens": 97344,
+    "output_tokens": 81012,
+    "reasoning_tokens": 0,
+    "total_tokens": 178356,
+    "avg_latency_seconds": 142.656,
+    "avg_cost_per_run": 14863.0,
+    "total_cost_units": 178356,
+    "cost_index": 1.2902
+  },
+  {
+    "model": "Qwen-Flash",
+    "input_tokens": 97471,
+    "output_tokens": 99738,
+    "reasoning_tokens": 0,
+    "total_tokens": 197209,
+    "avg_latency_seconds": 72.8474,
+    "avg_cost_per_run": 16434.08,
+    "total_cost_units": 197209,
+    "cost_index": 1.4266
+  },
+  {
+    "model": "GLM-51",
+    "input_tokens": 97440,
+    "output_tokens": 163496,
+    "reasoning_tokens": 68480,
+    "total_tokens": 329416,
+    "avg_latency_seconds": 251.9058,
+    "avg_cost_per_run": 27451.33,
+    "total_cost_units": 329416,
+    "cost_index": 2.3829
+  },
+  {
+    "model": "Kimi-K26-Fallback-Moonshot-V1-8K",
+    "input_tokens": 68969,
+    "output_tokens": 69271,
+    "reasoning_tokens": 0,
+    "total_tokens": 138240,
+    "avg_latency_seconds": 107.1514,
+    "avg_cost_per_run": 11520.0,
+    "total_cost_units": 138240,
+    "cost_index": 1.0
+  }
+]

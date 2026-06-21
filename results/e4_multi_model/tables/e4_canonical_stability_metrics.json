@@ -1,0 +1,42 @@
+[
+  {
+    "model": "DeepSeek-V4-Flash-NonThinking",
+    "msgtype_jaccard": 0.1741,
+    "transition_jaccard": 0.1818,
+    "evidence_jaccard": 0.1818,
+    "status_jaccard": 0.1671,
+    "canonical_stability": 0.1762
+  },
+  {
+    "model": "Qwen-Plus",
+    "msgtype_jaccard": 0.1849,
+    "transition_jaccard": 0.1266,
+    "evidence_jaccard": 0.1528,
+    "status_jaccard": 0.1466,
+    "canonical_stability": 0.1527
+  },
+  {
+    "model": "Qwen-Flash",
+    "msgtype_jaccard": 0.1858,
+    "transition_jaccard": 0.1584,
+    "evidence_jaccard": 0.1584,
+    "status_jaccard": 0.1566,
+    "canonical_stability": 0.1648
+  },
+  {
+    "model": "GLM-51",
+    "msgtype_jaccard": 0.1849,
+    "transition_jaccard": 0.1667,
+    "evidence_jaccard": 0.1667,
+    "status_jaccard": 0.1566,
+    "canonical_stability": 0.1687
+  },
+  {
+    "model": "Kimi-K26-Fallback-Moonshot-V1-8K",
+    "msgtype_jaccard": 0.1966,
+    "transition_jaccard": 0.1728,
+    "evidence_jaccard": 0.1756,
+    "status_jaccard": 0.1716,
+    "canonical_stability": 0.1792
+  }
+]

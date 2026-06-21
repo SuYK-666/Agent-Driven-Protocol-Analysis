@@ -18,6 +18,12 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_BASE_URL: str = "https://api.openai.com/v1"
     OPENAI_MODEL: str = "gpt-4o"
+    OPENAI_TIMEOUT_SECONDS: float = 240.0
+    OPENAI_STREAM: bool = True
+    OPENAI_TEMPERATURE: float = 0.0
+    OPENAI_TOP_P: float = 1.0
+    OPENAI_MAX_TOKENS: int = 3072
+    OPENAI_MAX_RETRIES: int = 2
 
     # Server
     BACKEND_HOST: str = "0.0.0.0"

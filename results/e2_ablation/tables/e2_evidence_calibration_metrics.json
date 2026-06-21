@@ -1,0 +1,62 @@
+[
+  {
+    "configuration": "A0_single_prompt_json",
+    "claim_count": 124,
+    "transition_count": 0,
+    "evidence_count": 247,
+    "evidence_coverage": 1.0,
+    "evidence_locatability": 1.0,
+    "supported_claims": 0,
+    "unsupported_claim_rate": 0.0,
+    "status_calibration": 1.0,
+    "over_claim_rate": 0.0
+  },
+  {
+    "configuration": "A1_spec_only",
+    "claim_count": 127,
+    "transition_count": 0,
+    "evidence_count": 252,
+    "evidence_coverage": 1.0,
+    "evidence_locatability": 1.0,
+    "supported_claims": 0,
+    "unsupported_claim_rate": 0.0,
+    "status_calibration": 1.0,
+    "over_claim_rate": 0.0
+  },
+  {
+    "configuration": "A2_trace_only",
+    "claim_count": 145,
+    "transition_count": 54,
+    "evidence_count": 276,
+    "evidence_coverage": 1.0,
+    "evidence_locatability": 0.8772,
+    "supported_claims": 1,
+    "unsupported_claim_rate": 0.1228,
+    "status_calibration": 0.8564,
+    "over_claim_rate": 0.1228
+  },
+  {
+    "configuration": "A3_spec_trace_no_verifier",
+    "claim_count": 221,
+    "transition_count": 57,
+    "evidence_count": 424,
+    "evidence_coverage": 1.0,
+    "evidence_locatability": 0.9188,
+    "supported_claims": 0,
+    "unsupported_claim_rate": 0.0812,
+    "status_calibration": 0.9188,
+    "over_claim_rate": 0.0812
+  },
+  {
+    "configuration": "A4_full_offline",
+    "claim_count": 223,
+    "transition_count": 59,
+    "evidence_count": 426,
+    "evidence_coverage": 1.0,
+    "evidence_locatability": 0.9194,
+    "supported_claims": 0,
+    "unsupported_claim_rate": 0.0806,
+    "status_calibration": 0.9194,
+    "over_claim_rate": 0.0806
+  }
+]
