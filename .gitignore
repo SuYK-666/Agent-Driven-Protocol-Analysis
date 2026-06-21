@@ -1,45 +1,56 @@
-# ── OS Files ───────────────────
+# Operating system
 .DS_Store
 Thumbs.db
+desktop.ini
 *.swp
+*.swo
 *~
 
-# ── Environment ────────────────
+# Environment and secrets
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# ── Backend (Python) ───────────
-backend/venv/
-backend/env/
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+.python-version
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
-dist/
 build/
+dist/
 *.egg-info/
 
-# ── Frontend (Node.js/Vite) ────
+# Python virtual environments
+venv/
+.venv/
+env/
+backend/venv/
+backend/.venv/
+backend/env/
+
+# Node / frontend
+node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/dist-ssr/
+frontend/.vite/
 frontend/.eslintcache
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# ── Database & Outputs ─────────
-# data/*.db
-data/*.sqlite
-data/*.sqlite3
-!data/docs/
-!data/traces/
+# Logs and runtime files
+*.log
+logs/
+*.pid
 
-# ── IDEs ───────────────────────
+# IDE / editor
 .vscode/
 .idea/
 *.suo
@@ -47,3 +58,11 @@ data/*.sqlite3
 *.njsproj
 *.sln
 *.sw?
+
+# Keep experiment data and published results under version control.
+!data/
+!data/**
+!results/
+!results/**
+!Docs/
+!Docs/**
